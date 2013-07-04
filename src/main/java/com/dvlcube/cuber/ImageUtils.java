@@ -27,6 +27,36 @@ public class ImageUtils {
 	private static final int[] RGB_MASKS = { 0xFF0000, 0xFF00, 0xFF };
 	private static final ColorModel RGB_OPAQUE = new DirectColorModel(32, RGB_MASKS[0], RGB_MASKS[1], RGB_MASKS[2]);
 
+	public enum RandomMode {
+		RGB {
+			@Override
+			public BufferedImage randomize(Dimension dimension) {
+				return ImageUtils.random(dimension);
+			}
+		},
+		HSB_PATTERN {
+			@Override
+			public BufferedImage randomize(Dimension dimension) {
+				return ImageUtils.randomPattern(dimension);
+			}
+		};
+		public BufferedImage randomize(Dimension dimension) {
+			return null;
+		}
+
+		private static Random random = new Random();
+
+		/**
+		 * @return
+		 * @since 04/07/2013
+		 * @author wonka
+		 */
+		public static RandomMode getAny() {
+			int modes = RandomMode.values().length;
+			return RandomMode.values()[random.nextInt(modes)];
+		}
+	}
+
 	/**
 	 * @param original
 	 * @return binarized image.
@@ -52,7 +82,7 @@ public class ImageUtils {
 					newPixel = 0;
 				}
 
-				newPixel = colorToRGB(alpha, newPixel, newPixel, newPixel);
+				newPixel = colorFromRGBA(newPixel, newPixel, newPixel, alpha);
 				binarized.setRGB(i, j, newPixel);
 			}
 		}
@@ -70,8 +100,42 @@ public class ImageUtils {
 	 * @since 21/06/2013
 	 * @author wonka
 	 */
-	public static int colorToRGB(int alpha, int red, int green, int blue) {
+	public static int colorFromRGBA(int red, int green, int blue, int alpha) {
 		int newPixel = 0;
+		newPixel += alpha;
+		newPixel = newPixel << 8;
+		newPixel += red;
+		newPixel = newPixel << 8;
+		newPixel += green;
+		newPixel = newPixel << 8;
+		newPixel += blue;
+
+		return newPixel;
+	}
+
+	public static int colorFromRGB(int red, int green, int blue) {
+		int newPixel = 0;
+		int alpha = 1;
+		newPixel += alpha;
+		newPixel = newPixel << 8;
+		newPixel += red;
+		newPixel = newPixel << 8;
+		newPixel += green;
+		newPixel = newPixel << 8;
+		newPixel += blue;
+
+		return newPixel;
+	}
+
+	public static int colorFromHSB(float h, float s, float b) {
+		Color c = Color.getHSBColor(h, s, b);
+		return color(c);
+	}
+
+	public static int color(Color color) {
+		int red = color.getRed(), green = color.getGreen(), blue = color.getBlue();
+		int newPixel = 0;
+		int alpha = 1;
 		newPixel += alpha;
 		newPixel = newPixel << 8;
 		newPixel += red;
@@ -276,7 +340,7 @@ public class ImageUtils {
 
 				red = (int) (0.21 * red + 0.71 * green + 0.07 * blue);
 				// Return back to original format
-				newPixel = colorToRGB(alpha, red, red, red);
+				newPixel = colorFromRGBA(red, red, red, alpha);
 
 				// Write pixels into image
 				lum.setRGB(i, j, newPixel);
@@ -402,7 +466,38 @@ public class ImageUtils {
 			int r = random.nextInt(256);
 			int g = random.nextInt(256);
 			int b = random.nextInt(256);
-			pixels[i] = colorToRGB(1, r, g, b);
+			pixels[i] = colorFromRGB(r, g, b);
+		}
+		return draw(pixels, dimension.width, dimension.height);
+	}
+
+	/**
+	 * @param dimension
+	 * @return a random pattern.
+	 * @since 04/07/2013
+	 * @author wonka
+	 */
+	public static BufferedImage randomPattern(Dimension dimension) {
+		Random random = new Random();
+		int[] pixels = new int[dimension.width * dimension.height];
+		int x = 0, y = 0;
+		int xFactor = random.nextInt(56) + 1;
+		int yFactor = random.nextInt(56) + 1;
+		for (int i = 0; i < pixels.length; i++) {
+			double sin = Math.sin((y / yFactor + x / xFactor));
+			double s = Math.sin((x / yFactor + y / xFactor) / (y + 1));
+			double b = Math.sin((y / yFactor * (x / xFactor)));
+
+			float hue = Cuber.$(sin, -1, 1).map(0, 1).f();
+			float saturation = Cuber.$(s, -1, 1).map(0, 1).f();
+			float brightness = Cuber.$(b, -1, 1).map(0, 1).f();
+
+			pixels[i] = colorFromHSB(hue, saturation, brightness);
+			if (x == dimension.width) {
+				x = 0;
+				y++;
+			}
+			x++;
 		}
 		return draw(pixels, dimension.width, dimension.height);
 	}

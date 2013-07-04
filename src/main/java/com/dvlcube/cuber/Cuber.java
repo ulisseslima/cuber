@@ -43,4 +43,24 @@ public class Cuber {
 	public static CubeImage $img(Class<?> origin, String path) {
 		return new CubeImage(origin, path);
 	}
+
+	public static CubeNumber $(double n) {
+		return new CubeNumber(n);
+	}
+
+	public static CubeNumber $(double n, Range<Double> range) {
+		return new CubeNumber(n, range);
+	}
+
+	public static CubeNumber $(double n, double range0, double range1) {
+		return new CubeNumber(n, range0, range1);
+	}
+
+	public static CubeDate $date(String pattern) {
+		return new CubeDate(pattern);
+	}
+
+	public static CubeDate $date() {
+		return new CubeDate();
+	}
 }

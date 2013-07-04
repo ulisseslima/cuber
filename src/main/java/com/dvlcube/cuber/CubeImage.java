@@ -8,6 +8,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import com.dvlcube.cuber.ImageUtils.RandomMode;
+
 /**
  * 
  * @since 21/06/2013
@@ -139,7 +141,12 @@ public class CubeImage {
 	}
 
 	public CubeImage randomize(int width, int height) {
-		o = ImageUtils.random(new Dimension(width, height));
+		RandomMode mode = RandomMode.getAny();
+		return randomize(mode, width, height);
+	}
+
+	public CubeImage randomize(RandomMode mode, int width, int height) {
+		o = mode.randomize(new Dimension(width, height));
 		return this;
 	}
 }
