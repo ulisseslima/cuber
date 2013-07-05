@@ -1,12 +1,14 @@
 package com.dvlcube.cuber;
 
+import com.dvlcube.cuber.StringUtils.Expand;
+
 /**
  * 
  * @author wonka
  * @since 28/02/2013
  */
 public class CubeString {
-	public String o;
+	public String o = "";
 
 	/**
 	 * @param string
@@ -14,7 +16,11 @@ public class CubeString {
 	 * @since 28/02/2013
 	 */
 	public CubeString(final String string) {
-		o = string;
+		reset(string);
+	}
+
+	public CubeString() {
+
 	}
 
 	public CubeString escapeHTML() {
@@ -32,6 +38,10 @@ public class CubeString {
 	public CubeString scramble() {
 		o = StringUtils.scramble(o);
 		return this;
+	}
+
+	public final void reset(String string) {
+		o = Expand.that(string);
 	}
 
 	@Override

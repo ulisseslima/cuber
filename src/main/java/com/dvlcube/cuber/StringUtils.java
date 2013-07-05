@@ -12,6 +12,59 @@ import java.util.Queue;
  * @since 28/02/2013
  */
 public class StringUtils {
+	public enum Expand {
+		DATE("${date}") {
+			@Override
+			public String doExpansion(String string) {
+				return string.replace(var, new CubeDate("yyyy-MM-dd").toString());
+			}
+		},
+		DATETIME("${datetime}") {
+			@Override
+			public String doExpansion(String string) {
+				return string.replace(var, new CubeDate().toString());
+			}
+		},
+		THREAD("${thread}") {
+			@Override
+			public String doExpansion(String string) {
+				return string.replace(var, Thread.currentThread().getName());
+			}
+		},
+		TID("${tid}") {
+			@Override
+			public String doExpansion(String string) {
+				String tid = String.valueOf(Thread.currentThread().getId());
+				return string.replace(var, tid);
+			}
+		};
+		protected final String var;
+
+		Expand(String var) {
+			this.var = var;
+		}
+
+		public String doExpansion(String string) {
+			throw new UnsupportedOperationException("no-op");
+		}
+
+		/**
+		 * @param string
+		 *            string to be expanded.
+		 * @return the resulting string.
+		 * @since 04/07/2013
+		 * @author wonka
+		 */
+		public static String that(String string) {
+			for (Expand expansion : values()) {
+				if (string.contains(expansion.var)) {
+					string = expansion.doExpansion(string);
+				}
+			}
+			return string;
+		}
+	}
+
 	/**
 	 * @param string
 	 *            the string to escape.
@@ -118,5 +171,22 @@ public class StringUtils {
 		} catch (Exception e) {
 			return "Couldn't stringify: " + e.getMessage();
 		}
+	}
+
+	/**
+	 * Takes a string and replaces known variables:
+	 * <p>
+	 * ${date} - today's date in the format yyyy-MM-dd<br>
+	 * ${datetime} - today's date and time in the format yyyy-MM-dd_HH-mm-ss.SSS<br>
+	 * ${thread} - current thread name<br>
+	 * ${tid} - current thread id<br>
+	 * 
+	 * @param string
+	 * @return the resulting string.
+	 * @since 04/07/2013
+	 * @author wonka
+	 */
+	public static String expand(String string) {
+		return Expand.that(string);
 	}
 }

@@ -34,6 +34,15 @@ public class CubeFile {
 		this(path, true);
 	}
 
+	/**
+	 * @param path
+	 * @since 04/07/2013
+	 * @author wonka
+	 */
+	public CubeFile(CubeString path) {
+		this(path.o, true);
+	}
+
 	public boolean isDir() {
 		return o.isDirectory();
 	}

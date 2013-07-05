@@ -32,6 +32,10 @@ public class Cuber {
 		return new CubeFile(path);
 	}
 
+	public static CubeFile $f(CubeString path) {
+		return new CubeFile(path);
+	}
+
 	public static CubeImage $img(String path) {
 		return new CubeImage(path);
 	}
