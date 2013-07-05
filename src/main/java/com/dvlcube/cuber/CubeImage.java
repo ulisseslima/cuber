@@ -18,11 +18,11 @@ import com.dvlcube.cuber.ImageUtils.RandomMode;
 public class CubeImage {
 
 	public BufferedImage o;
-	public String path;
 	public Class<?> origin;
+	public final CubeString path = new CubeString();
 
 	public CubeImage(int width, int height) {
-		this.o = ImageUtils.random(new Dimension(width, height));
+		this.o = RandomMode.getAny().randomize(new Dimension(width, height));
 	}
 
 	public CubeImage(BufferedImage image) {
@@ -37,8 +37,8 @@ public class CubeImage {
 	 */
 	public CubeImage(String path) {
 		try {
-			this.path = path;
-			BufferedImage image = ImageIO.read($f(path).o);
+			this.path.reset(path);
+			BufferedImage image = ImageIO.read($f(this.path).o);
 			this.o = image;
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -55,9 +55,9 @@ public class CubeImage {
 	 */
 	public CubeImage(Class<?> aClass, String path) {
 		try {
-			this.path = path;
+			this.path.reset(path);
 			this.origin = aClass;
-			BufferedImage image = ImageIO.read(aClass.getResourceAsStream(path));
+			BufferedImage image = ImageIO.read(aClass.getResourceAsStream(this.path.o));
 			this.o = image;
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -92,10 +92,10 @@ public class CubeImage {
 	 * @author wonka
 	 */
 	public CubeImage write(int[] pixels) {
-		if (path == null)
-			throw new IllegalArgumentException("image doesn't exist in the disk yet");
+		if (path.isBlank())
+			throw new IllegalArgumentException("path was not initialized");
 
-		ImageUtils.write(pixels, new Dimension(o.getWidth(), o.getHeight()), path);
+		ImageUtils.write(pixels, new Dimension(o.getWidth(), o.getHeight()), path.o);
 		return this;
 	}
 
@@ -108,7 +108,7 @@ public class CubeImage {
 	 * @author wonka
 	 */
 	public CubeImage write(int[] pixels, String path) {
-		this.path = path;
+		this.path.reset(path);
 		write(pixels);
 		return this;
 	}
@@ -126,8 +126,8 @@ public class CubeImage {
 		if (o == null)
 			throw new IllegalStateException("this BufferedImage was not initialized");
 
-		this.path = path;
-		ImageUtils.write(o, path);
+		this.path.reset(path);
+		ImageUtils.write(o, this.path.o);
 
 		return this;
 	}
@@ -140,9 +140,33 @@ public class CubeImage {
 		return o.getHeight();
 	}
 
+	/**
+	 * Fills this buffered image with a random pattern.
+	 * 
+	 * @param width
+	 * @param height
+	 * @return this.
+	 * @since 04/07/2013
+	 * @author wonka
+	 */
 	public CubeImage randomize(int width, int height) {
 		RandomMode mode = RandomMode.getAny();
 		return randomize(mode, width, height);
+	}
+
+	/**
+	 * Fills this buffered image with a random pattern.
+	 * 
+	 * @return this.
+	 * @since 04/07/2013
+	 * @author wonka
+	 */
+	public CubeImage randomize() {
+		if (o == null)
+			throw new IllegalStateException("The BufferedImage was not initialized");
+
+		RandomMode mode = RandomMode.getAny();
+		return randomize(mode, o.getWidth(), o.getHeight());
 	}
 
 	public CubeImage randomize(RandomMode mode, int width, int height) {
