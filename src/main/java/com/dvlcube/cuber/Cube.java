@@ -41,4 +41,15 @@ public class Cube {
 	public String stringify() {
 		return StringUtils.stringify(o);
 	}
+
+	/**
+	 * @param objects
+	 *            objects to compare.
+	 * @return true if this object is equal to any of the other objects.
+	 * @since 07/07/2013
+	 * @author wonka
+	 */
+	public boolean in(Object... objects) {
+		return ObjectUtils.in(o, objects);
+	}
 }
