@@ -67,4 +67,28 @@ public class Cuber {
 	public static CubeDate $date() {
 		return new CubeDate();
 	}
+
+	public static CubeSequence $seq() {
+		return new CubeSequence();
+	}
+
+	public static CubeSequence $seq(String sequence) {
+		return new CubeSequence(sequence);
+	}
+
+	public static CubeSequence $seq(int instrument, int tempo) {
+		return new CubeSequence(instrument, tempo);
+	}
+
+	public static CubeSequence $seq(int length) {
+		return new CubeSequence(length);
+	}
+
+	public static CubeInput $input(String message) {
+		return new CubeInput(message);
+	}
+
+	public static CubeDebug $debug() {
+		return new CubeDebug();
+	}
 }
