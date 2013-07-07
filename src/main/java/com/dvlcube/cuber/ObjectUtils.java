@@ -146,4 +146,21 @@ public class ObjectUtils {
 	public static void updateProperties(Object from, Object to) {
 		copyProperties(from, to, true);
 	}
+
+	/**
+	 * @param o
+	 *            object to compare.
+	 * @param objects
+	 *            objects available.
+	 * @return true if the object is equal to any of the other objects.
+	 * @since 07/07/2013
+	 * @author wonka
+	 */
+	public static boolean in(Object o, Object... objects) {
+		for (Object object : objects) {
+			if (o.equals(object))
+				return true;
+		}
+		return false;
+	}
 }
