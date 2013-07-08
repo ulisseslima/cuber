@@ -7,6 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import com.dvlcube.cuber.factory.NameFactory;
+
 /**
  * @author wonka
  * @since 28/02/2013
@@ -23,6 +25,24 @@ public class StringUtils {
 			@Override
 			public String doExpansion(String string) {
 				return string.replace(var, new CubeDate().toString());
+			}
+		},
+		USER("${user.name}") {
+			@Override
+			public String doExpansion(String string) {
+				return string.replace(var, System.getProperty("user.name"));
+			}
+		},
+		USER_DIR("${user.dir}") {
+			@Override
+			public String doExpansion(String string) {
+				return string.replace(var, System.getProperty("user.dir"));
+			}
+		},
+		NAME("${name}") {
+			@Override
+			public String doExpansion(String string) {
+				return string.replace(var, StringUtils.randomName());
 			}
 		},
 		THREAD("${thread}") {
@@ -188,5 +208,25 @@ public class StringUtils {
 	 */
 	public static String expand(String string) {
 		return Expand.that(string);
+	}
+
+	/**
+	 * @return a random name.
+	 * @since 07/07/2013
+	 * @author wonka
+	 */
+	public static String randomName() {
+		return randomName(1);
+	}
+
+	/**
+	 * @param n
+	 *            how many names?
+	 * @return random names.
+	 * @since 07/07/2013
+	 * @author wonka
+	 */
+	public static String randomName(int n) {
+		return new NameFactory(n).getName();
 	}
 }
