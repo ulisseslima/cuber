@@ -68,24 +68,45 @@ public class Cuber {
 		return new CubeDate();
 	}
 
-	public static CubeSequence $seq() {
-		return new CubeSequence();
+	public static CubeSequence $midi(String... sequences) {
+		if (sequences != null) {
+			if (sequences.length == 1) {
+				if (sequences[0].contains(CubeSequence.ATTRIBUTE_SEPARATOR))
+					return CubeSequence.valueOf(sequences[0]);
+			}
+		}
+		return new CubeSequence(sequences);
 	}
 
-	public static CubeSequence $seq(String sequence) {
-		return new CubeSequence(sequence);
+	public static CubeSequence $midi(CubeFile file) {
+		if (file.is(CubeSequence.FILE_EXTENSION))
+			return CubeSequence.valueOf(file);
+
+		return new CubeSequence(file);
 	}
 
-	public static CubeSequence $seq(int instrument, int tempo) {
+	public static CubeSequence $midi(int instrument, int tempo) {
 		return new CubeSequence(instrument, tempo);
 	}
 
-	public static CubeSequence $seq(int length) {
+	public static CubeSequence $midi(int instrument, int tempo, String... sequences) {
+		return new CubeSequence(instrument, tempo, sequences);
+	}
+
+	public static CubeSequence $midi(int length) {
 		return new CubeSequence(length);
 	}
 
-	public static CubeInput $input(String message) {
+	public static CubeInput $in(String message) {
 		return new CubeInput(message);
+	}
+
+	public static void $out(Object object) {
+		System.out.println(object);
+	}
+
+	public static void $printf(String message, Object... objects) {
+		System.out.printf(message, objects);
 	}
 
 	public static CubeDebug $debug() {
