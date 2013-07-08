@@ -2,10 +2,13 @@ package com.dvlcube.cuber;
 
 import static com.dvlcube.cuber.Cuber.$;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiEvent;
+import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Track;
@@ -266,5 +269,48 @@ public class MidiUtils {
 
 	public static String randomNotes() {
 		return randomNotes(random.nextInt(200));
+	}
+
+	/**
+	 * Writes a sequence to disc using the first available MIDI type.
+	 * 
+	 * @param sequence
+	 *            the sequence to save.
+	 * @return true if the sequence was written to disc.
+	 * @since 07/07/2013
+	 * @author wonka
+	 */
+	public static boolean write(Sequence sequence, String filename) {
+		if (sequence == null)
+			throw new IllegalArgumentException("sequence is null");
+
+		int[] allowedTypes = MidiSystem.getMidiFileTypes(sequence);
+		if (allowedTypes.length == 0) {
+			System.err.println("No supported MIDI file types.");
+		} else {
+			try {
+				MidiSystem.write(sequence, allowedTypes[0], new File(filename));
+				return true;
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * @param file
+	 *            file name;
+	 * @return the sequence represented by the midi file.
+	 * @since 07/07/2013
+	 * @author wonka
+	 */
+	public static Sequence read(File file) {
+		try {
+			return MidiSystem.getSequence(file);
+		} catch (InvalidMidiDataException | IOException e) {
+			e.printStackTrace();
+		}
+		throw new IllegalArgumentException("not a file: '" + file + "'");
 	}
 }

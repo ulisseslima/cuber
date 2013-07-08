@@ -1,7 +1,8 @@
 package com.dvlcube.cuber;
 
+import static com.dvlcube.cuber.Cuber.$;
 import static com.dvlcube.cuber.Cuber.$debug;
-import static com.dvlcube.cuber.Cuber.$seq;
+import static com.dvlcube.cuber.Cuber.$f;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -22,13 +23,18 @@ import javax.sound.midi.Synthesizer;
  * Cool instruments: <br>
  * eerie: 97<br>
  * blow: 77<br>
+ * horn: 58,56<br>
  * acoustic: 13<br>
- * choir: 94
+ * choir: 94<br>
+ * glass: 98
  * 
  * @since 06/07/2013
  * @author wonka
  */
 public class CubeSequence {
+	public static final String ATTRIBUTE_SEPARATOR = "§";
+	public static final String SEQUENCE_SEPARATOR = "µ";
+	public static final String FILE_EXTENSION = ".csq";
 	private final ArrayList<String> sequences = new ArrayList<>();
 	public int instrument = 0;
 	public int tempo = 120;
@@ -38,13 +44,14 @@ public class CubeSequence {
 	private final Object lock = new Object();
 	public long lastModified = System.currentTimeMillis();
 	public int timeout = 30;
+	private boolean loadedFromMidi;
 
-	public Sequence sequence;
+	public Sequence o;
 	public Sequencer sequencer;
 	{
 		try {
 			// 16 ticks per quarter note.
-			sequence = new Sequence(Sequence.PPQ, 16);
+			o = new Sequence(Sequence.PPQ, 16);
 			sequencer = MidiSystem.getSequencer();
 			sequencer.open();
 			Synthesizer synthesizer = MidiSystem.getSynthesizer();
@@ -113,6 +120,19 @@ public class CubeSequence {
 		this.tempo = tempo;
 	}
 
+	public CubeSequence(int instrument, int tempo, String... sequences) {
+		this.instrument = instrument;
+		this.tempo = tempo;
+		add(1, sequences);
+		prepareSequence();
+	}
+
+	public CubeSequence(CubeFile input) {
+		loadedFromMidi = true;
+		this.o = MidiUtils.read(input.o);
+		setSequence(o);
+	}
+
 	/**
 	 * Useful only if you want a random song.
 	 * 
@@ -153,7 +173,7 @@ public class CubeSequence {
 	}
 
 	public CubeSequence play() {
-		if (sequences.isEmpty())
+		if (sequences.isEmpty() && !loadedFromMidi)
 			add(1, MidiUtils.randomNotes());
 
 		synchronized (lock) {
@@ -167,7 +187,8 @@ public class CubeSequence {
 
 			ended = false;
 			prepareSequence();
-			sequencer.setTempoInBPM(tempo);
+			if (!loadedFromMidi)
+				sequencer.setTempoInBPM(tempo);
 			sequencer.start();
 			return this;
 		}
@@ -182,7 +203,7 @@ public class CubeSequence {
 
 	private void resetSequence() {
 		try {
-			sequence = new Sequence(Sequence.PPQ, 16);
+			o = new Sequence(Sequence.PPQ, 16);
 			sequences.clear();
 		} catch (InvalidMidiDataException e) {
 			e.printStackTrace();
@@ -199,17 +220,20 @@ public class CubeSequence {
 	private void prepareSequence() {
 		if (sequenceChanged) {
 			for (String sequenceString : sequences) {
-				MidiUtils.addTrack(sequence, instrument, tempo, sequenceString.toCharArray());
+				MidiUtils.addTrack(o, instrument, tempo, sequenceString.toCharArray());
 			}
+			setSequence(o);
+		}
+	}
 
-			try {
-				sequencer.setSequence(sequence);
-				sequenceChanged = false;
-				// TODO find proper way to kill delay before first note.
-				$debug().sleep(30);
-			} catch (InvalidMidiDataException e) {
-				e.printStackTrace();
-			}
+	private void setSequence(Sequence sequence) {
+		try {
+			sequencer.setSequence(sequence);
+			sequenceChanged = false;
+			// TODO find proper way to kill delay before first note.
+			$debug().sleep(30);
+		} catch (InvalidMidiDataException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -258,12 +282,97 @@ public class CubeSequence {
 		return this;
 	}
 
-	@Override
-	public String toString() {
-		return "CubeSequence [sequences=" + sequences + ", instrument=" + instrument + ", tempo=" + tempo + "]";
+	/**
+	 * Writes a MIDI file.
+	 * 
+	 * @param path
+	 *            file destination.
+	 * @return this.
+	 * @since 07/07/2013
+	 * @author wonka
+	 */
+	public CubeSequence write(String path) {
+		return write($(path));
 	}
 
-	public static void main(String[] args) throws InterruptedException {
-		System.out.println($seq().play());
+	/**
+	 * Writes a MIDI file.
+	 * 
+	 * @param path
+	 *            destination.
+	 * @return this.
+	 * @since 07/07/2013
+	 * @author wonka
+	 */
+	public CubeSequence write(CubeString path) {
+		MidiUtils.write(o, path.o);
+		return this;
+	}
+
+	/**
+	 * Writes a text file that can be used to reconstruct this.
+	 * <p>
+	 * The file will have the .csq extension.
+	 * 
+	 * @param path
+	 *            destination.
+	 * @return this.
+	 * @since 07/07/2013
+	 * @author wonka
+	 */
+	public CubeSequence save(String path) {
+		return save($(path));
+	}
+
+	/**
+	 * Writes a text file that can be used to reconstruct this.
+	 * 
+	 * @param path
+	 *            destination.
+	 * @return this.
+	 * @since 07/07/2013
+	 * @author wonka
+	 */
+	public CubeSequence save(CubeString path) {
+		$f(path + FILE_EXTENSION).append(this.toString());
+		return this;
+	}
+
+	/**
+	 * @param string
+	 *            string representing a saved cube sequence.
+	 * @return a CubeSequence.
+	 * @since 07/07/2013
+	 * @author wonka
+	 */
+	public static CubeSequence valueOf(String string) {
+		String[] sequenceArray = string.split(ATTRIBUTE_SEPARATOR);
+		if (sequenceArray.length != 3)
+			throw new IllegalArgumentException("this string does not represent a cube sequence");
+
+		try {
+			int instrument = Integer.parseInt(sequenceArray[0]);
+			int tempo = Integer.parseInt(sequenceArray[1]);
+			String sequences = sequenceArray[2];
+
+			return new CubeSequence(instrument, tempo, sequences.split(SEQUENCE_SEPARATOR));
+		} catch (Exception e) {
+			throw new IllegalArgumentException("this string does not represent a cube sequence");
+		}
+	}
+
+	public static CubeSequence valueOf(CubeFile f) {
+		return valueOf(f.firstLine());
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append(instrument).append(ATTRIBUTE_SEPARATOR);
+		builder.append(tempo).append(ATTRIBUTE_SEPARATOR);
+		for (String sequence : sequences) {
+			builder.append(SEQUENCE_SEPARATOR).append(sequence);
+		}
+		return builder.toString().replaceFirst(SEQUENCE_SEPARATOR, "");
 	}
 }
