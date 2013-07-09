@@ -1,7 +1,9 @@
-package com.dvlcube.cuber;
+package com.dvlcube.cuber.utils;
 
 import java.util.Calendar;
 import java.util.Date;
+
+import com.dvlcube.cuber.Range;
 
 /**
  * 

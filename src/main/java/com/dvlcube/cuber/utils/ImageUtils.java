@@ -1,8 +1,10 @@
-package com.dvlcube.cuber;
+package com.dvlcube.cuber.utils;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.DataBuffer;
@@ -17,6 +19,8 @@ import java.io.IOException;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
+
+import com.dvlcube.cuber.Cuber;
 
 /**
  * 
@@ -418,6 +422,31 @@ public class ImageUtils {
 	}
 
 	/**
+	 * @param image
+	 *            the image to label.
+	 * @param text
+	 *            the text to use.
+	 * @return the image with a label on it.
+	 * @since 08/07/2013
+	 * @author wonka
+	 */
+	public static BufferedImage drawLabel(BufferedImage image, String text) {
+		Graphics2D g = (Graphics2D) image.getGraphics();
+		g.setColor(new Color(255, 255, 255, 255));
+		int w1 = (image.getWidth() * 2) / 100;
+		int y1 = 10;
+		int labelSize = 30;
+		g.fillRect(w1, y1, image.getWidth() - (w1 + w1), labelSize);
+
+		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		g.setColor(Color.BLACK);
+		int fontSize = (labelSize * 70) / 100;
+		g.setFont(new Font(Font.MONOSPACED, Font.PLAIN, fontSize));
+		g.drawString(text, w1, y1 + fontSize);
+		return image;
+	}
+
+	/**
 	 * Writes an array of pixels to the disc.
 	 * 
 	 * @param pixels
@@ -445,8 +474,22 @@ public class ImageUtils {
 	 * @author wonka
 	 */
 	public static void write(BufferedImage image, String file) {
+		write(image, new File(file));
+	}
+
+	/**
+	 * Writes a BufferedImage to the disc.
+	 * 
+	 * @param image
+	 *            BufferedImage.
+	 * @param file
+	 *            destination.
+	 * @since 08/07/2013
+	 * @author wonka
+	 */
+	public static void write(BufferedImage image, File file) {
 		try {
-			ImageIO.write(image, "png", new File(file));
+			ImageIO.write(image, "png", file);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

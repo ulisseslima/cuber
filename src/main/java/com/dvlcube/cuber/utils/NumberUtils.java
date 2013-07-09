@@ -1,4 +1,6 @@
-package com.dvlcube.cuber;
+package com.dvlcube.cuber.utils;
+
+import com.dvlcube.cuber.Range;
 
 /**
  * 

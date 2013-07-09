@@ -1,4 +1,4 @@
-package com.dvlcube.cuber;
+package com.dvlcube.cuber.utils;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import com.dvlcube.cuber.CubeDate;
 import com.dvlcube.cuber.factory.NameFactory;
 
 /**

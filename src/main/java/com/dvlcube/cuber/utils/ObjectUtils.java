@@ -1,4 +1,4 @@
-package com.dvlcube.cuber;
+package com.dvlcube.cuber.utils;
 
 import java.beans.BeanInfo;
 import java.beans.Introspector;

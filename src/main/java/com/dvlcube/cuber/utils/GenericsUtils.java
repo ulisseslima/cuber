@@ -1,4 +1,4 @@
-package com.dvlcube.cuber;
+package com.dvlcube.cuber.utils;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import java.util.List;
  * @since 19/03/2013
  */
 @SuppressWarnings("unchecked")
-public class CubeGenerics {
+public class GenericsUtils {
 	public static <T> T unchecked(Object object) {
 		return (T) object;
 	}

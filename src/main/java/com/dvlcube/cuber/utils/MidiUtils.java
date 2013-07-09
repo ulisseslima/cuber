@@ -1,4 +1,4 @@
-package com.dvlcube.cuber;
+package com.dvlcube.cuber.utils;
 
 import static com.dvlcube.cuber.Cuber.$;
 
@@ -9,11 +9,14 @@ import java.util.Random;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiEvent;
 import javax.sound.midi.MidiSystem;
+import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Track;
 
-import com.dvlcube.cuber.MidiUtils.Note.Modifier;
+import org.jfugue.examples.Midi2WavRenderer;
+
+import com.dvlcube.cuber.utils.MidiUtils.Note.Modifier;
 
 /**
  * 
@@ -224,6 +227,9 @@ public class MidiUtils {
 	public static void addNote(Track track, int startTick, int tickLength, int key, int velocity)
 			throws InvalidMidiDataException {
 		ShortMessage on = new ShortMessage();
+		key = $(key).limit(0, 127).i();
+		velocity = $(velocity).limit(0, 127).i();
+
 		on.setMessage(ShortMessage.NOTE_ON, 0, key, velocity);
 		ShortMessage off = new ShortMessage();
 		off.setMessage(ShortMessage.NOTE_OFF, 0, key, velocity);
@@ -268,7 +274,7 @@ public class MidiUtils {
 	}
 
 	public static String randomNotes() {
-		return randomNotes(random.nextInt(200));
+		return randomNotes(random.nextInt(1000) + 200);
 	}
 
 	/**
@@ -312,5 +318,23 @@ public class MidiUtils {
 			e.printStackTrace();
 		}
 		throw new IllegalArgumentException("not a file: '" + file + "'");
+	}
+
+	/**
+	 * @param sequence
+	 *            sequence to write.
+	 * @param file
+	 *            destination.
+	 * @return total bytes written, -1 in case of an exception.
+	 * @since 08/07/2013
+	 * @author wonka
+	 */
+	public static double renderWav(Sequence sequence, File file) {
+		try {
+			return new Midi2WavRenderer().createWavFile(sequence, file);
+		} catch (MidiUnavailableException | InvalidMidiDataException | IOException e) {
+			e.printStackTrace();
+		}
+		return -1;
 	}
 }

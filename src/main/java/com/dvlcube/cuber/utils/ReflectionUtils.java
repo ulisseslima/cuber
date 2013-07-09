@@ -1,4 +1,4 @@
-package com.dvlcube.cuber;
+package com.dvlcube.cuber.utils;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -8,7 +8,7 @@ import java.lang.reflect.Type;
  * @author wonka
  * @since 16/09/2012
  */
-public class CubeReflection {
+public class ReflectionUtils {
 
 	/**
 	 * @return
