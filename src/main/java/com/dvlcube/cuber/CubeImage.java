@@ -8,7 +8,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import com.dvlcube.cuber.ImageUtils.RandomMode;
+import com.dvlcube.cuber.utils.ImageUtils;
+import com.dvlcube.cuber.utils.ImageUtils.RandomMode;
 
 /**
  * 
@@ -21,8 +22,18 @@ public class CubeImage {
 	public Class<?> origin;
 	public final CubeString path = new CubeString();
 
+	/**
+	 * Constructs an image using a random HSB pattern.
+	 * 
+	 * @param width
+	 *            desired height.
+	 * @param height
+	 *            desired width.
+	 * @since 08/07/2013
+	 * @author wonka
+	 */
 	public CubeImage(int width, int height) {
-		this.o = RandomMode.getAny().randomize(new Dimension(width, height));
+		this.o = RandomMode.HSB_PATTERN.randomize(new Dimension(width, height));
 	}
 
 	public CubeImage(BufferedImage image) {
@@ -114,7 +125,9 @@ public class CubeImage {
 	}
 
 	/**
-	 * Writes this image to disc. The image have to be already initialized
+	 * Writes this image to disc. The image have to be already initialized.
+	 * <p>
+	 * Only PNG supported ATM.
 	 * 
 	 * @param path
 	 *            destination.
@@ -123,12 +136,43 @@ public class CubeImage {
 	 * @author wonka
 	 */
 	public CubeImage write(String path) {
+		return write($f(path));
+	}
+
+	/**
+	 * Writes this image to disc. The image have to be already initialized
+	 * 
+	 * @param file
+	 *            destination.
+	 * @return this.
+	 * @since 08/07/2013
+	 * @author wonka
+	 */
+	public CubeImage write(CubeFile file) {
 		if (o == null)
 			throw new IllegalStateException("this BufferedImage was not initialized");
 
-		this.path.reset(path);
-		ImageUtils.write(o, this.path.o);
+		String path = file.o.getPath();
+		if (!path.endsWith(".png"))
+			path = path + ".png";
 
+		this.path.reset(path);
+		ImageUtils.write(o, file.o);
+
+		return this;
+	}
+
+	/**
+	 * Labels this image.
+	 * 
+	 * @param text
+	 *            label to use.
+	 * @return this.
+	 * @since 08/07/2013
+	 * @author wonka
+	 */
+	public CubeImage label(String text) {
+		ImageUtils.drawLabel(o, text);
 		return this;
 	}
 
@@ -172,5 +216,10 @@ public class CubeImage {
 	public CubeImage randomize(RandomMode mode, int width, int height) {
 		o = mode.randomize(new Dimension(width, height));
 		return this;
+	}
+
+	@Override
+	public String toString() {
+		return "CubeImage [o=" + o + ", origin=" + origin + ", path=" + path + "]";
 	}
 }
