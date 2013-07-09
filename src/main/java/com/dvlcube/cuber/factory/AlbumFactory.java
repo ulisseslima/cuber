@@ -17,6 +17,20 @@ import com.dvlcube.cuber.utils.AudioUtils;
  */
 public class AlbumFactory {
 	private static final String ARTIST = "DvlCube";
+
+	/**
+	 * @param args
+	 * @since 09/07/2013
+	 * @author wonka
+	 */
+	public static void main(String[] args) {
+		if (args.length < 1) {
+			System.out.println("album folder not specified.");
+		} else {
+			new AlbumFactory().createAlbum(args[0]);
+		}
+	}
+
 	private final Random random = new Random();
 
 	/**
@@ -59,17 +73,5 @@ public class AlbumFactory {
 		}
 		songName = songName.replaceFirst(" ", "");
 		return songName;
-	}
-
-	/**
-	 * Kept for testing.
-	 * 
-	 * @param args
-	 * @since 09/07/2013
-	 * @author wonka
-	 */
-	public static void main(String[] args) {
-		// new AlbumFactory().createAlbum(System.getProperty("user.dir"));
-		new AlbumFactory().createAlbum("H:/usr/music/dvlcube");
 	}
 }
