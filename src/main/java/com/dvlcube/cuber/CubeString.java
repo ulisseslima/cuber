@@ -1,6 +1,7 @@
 package com.dvlcube.cuber;
 
-import com.dvlcube.cuber.StringUtils.Expand;
+import com.dvlcube.cuber.utils.StringUtils;
+import com.dvlcube.cuber.utils.StringUtils.Expand;
 
 /**
  * 

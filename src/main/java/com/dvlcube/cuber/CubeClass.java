@@ -1,5 +1,7 @@
 package com.dvlcube.cuber;
 
+import com.dvlcube.cuber.utils.ClassUtils;
+
 /**
  * 
  * @author wonka
@@ -35,5 +37,10 @@ public class CubeClass<C> {
 	 */
 	public boolean doesImplementAll(Class<?>... interfaceClasses) {
 		return ClassUtils.doesImplementAll(o, interfaceClasses);
+	}
+
+	@Override
+	public String toString() {
+		return o.toString();
 	}
 }

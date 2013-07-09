@@ -1,7 +1,10 @@
 package com.dvlcube.cuber;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Set;
+
+import com.dvlcube.cuber.utils.ArrayUtils;
 
 /**
  * 
@@ -36,5 +39,10 @@ public class CubeArray<T> {
 
 	public Set<T> concatIntoSet(Collection<T> collection) {
 		return ArrayUtils.concatIntoSet(array, collection);
+	}
+
+	@Override
+	public String toString() {
+		return Arrays.toString(array);
 	}
 }

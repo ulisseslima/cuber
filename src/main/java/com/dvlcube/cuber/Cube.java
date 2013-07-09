@@ -1,5 +1,8 @@
 package com.dvlcube.cuber;
 
+import com.dvlcube.cuber.utils.ObjectUtils;
+import com.dvlcube.cuber.utils.StringUtils;
+
 /**
  * 
  * @author wonka
@@ -51,5 +54,10 @@ public class Cube {
 	 */
 	public boolean in(Object... objects) {
 		return ObjectUtils.in(o, objects);
+	}
+
+	@Override
+	public String toString() {
+		return o.toString();
 	}
 }
