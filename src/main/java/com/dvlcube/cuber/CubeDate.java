@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import com.dvlcube.cuber.utils.DateUtils;
+
 /**
  * 
  * @author wonka
@@ -48,6 +50,24 @@ public class CubeDate {
 		this.pattern = pattern;
 		_.applyPattern(pattern);
 		return this;
+	}
+
+	/**
+	 * @return the year.
+	 * @since 09/07/2013
+	 * @author wonka
+	 */
+	public int year() {
+		return o.get(Calendar.YEAR);
+	}
+
+	/**
+	 * @return year as tring.
+	 * @since 09/07/2013
+	 * @author wonka
+	 */
+	public String sYear() {
+		return String.valueOf(o.get(Calendar.YEAR));
 	}
 
 	@Override
