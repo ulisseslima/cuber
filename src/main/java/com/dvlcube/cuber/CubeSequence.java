@@ -15,6 +15,9 @@ import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
 import javax.sound.midi.Synthesizer;
 
+import com.dvlcube.cuber.utils.AudioUtils;
+import com.dvlcube.cuber.utils.MidiUtils;
+
 /**
  * Notes:<br>
  * http://en.wikipedia.org/wiki/Pulses_Per_Quarter<br>
@@ -26,7 +29,8 @@ import javax.sound.midi.Synthesizer;
  * horn: 58,56<br>
  * acoustic: 13<br>
  * choir: 94<br>
- * glass: 98
+ * glass: 98<br>
+ * percussive: 47
  * 
  * @since 06/07/2013
  * @author wonka
@@ -45,6 +49,7 @@ public class CubeSequence {
 	public long lastModified = System.currentTimeMillis();
 	public int timeout = 30;
 	private boolean loadedFromMidi;
+	private final Random random = new Random();
 
 	public Sequence o;
 	public Sequencer sequencer;
@@ -105,7 +110,7 @@ public class CubeSequence {
 		randomizeTempoAndInstrument();
 
 		add(1, sequences);
-		prepareSequence();
+		addTracks();
 	}
 
 	/**
@@ -124,7 +129,7 @@ public class CubeSequence {
 		this.instrument = instrument;
 		this.tempo = tempo;
 		add(1, sequences);
-		prepareSequence();
+		addTracks();
 	}
 
 	public CubeSequence(CubeFile input) {
@@ -145,11 +150,10 @@ public class CubeSequence {
 		randomizeTempoAndInstrument();
 
 		add(1, MidiUtils.randomNotes(length));
-		prepareSequence();
+		addTracks();
 	}
 
 	private void randomizeTempoAndInstrument() {
-		Random random = new Random();
 		this.instrument = random.nextInt(128);
 		this.tempo = random.nextInt(300) + 1;
 	}
@@ -173,8 +177,7 @@ public class CubeSequence {
 	}
 
 	public CubeSequence play() {
-		if (sequences.isEmpty() && !loadedFromMidi)
-			add(1, MidiUtils.randomNotes());
+		checkIfNeedsRandomization();
 
 		synchronized (lock) {
 			while (!ended) {
@@ -186,12 +189,32 @@ public class CubeSequence {
 			}
 
 			ended = false;
-			prepareSequence();
 			if (!loadedFromMidi)
 				sequencer.setTempoInBPM(tempo);
 			sequencer.start();
 			return this;
 		}
+	}
+
+	private void checkIfNeedsRandomization() {
+		if (sequences.isEmpty() && !loadedFromMidi)
+			randomizeTracks();
+	}
+
+	private void randomizeTracks() {
+		int tracks = random.nextInt(4) + 1;
+		for (int i = 0; i < tracks; i++) {
+			addTrack(randomizeInstrument(), tempo, MidiUtils.randomNotes());
+		}
+	}
+
+	/**
+	 * @return the randomized instrument.
+	 * @since 09/07/2013
+	 * @author wonka
+	 */
+	private int randomizeInstrument() {
+		return this.instrument = random.nextInt(128);
 	}
 
 	public CubeSequence play(String... sequences) {
@@ -217,13 +240,18 @@ public class CubeSequence {
 		return loop();
 	}
 
-	private void prepareSequence() {
+	private void addTracks() {
 		if (sequenceChanged) {
 			for (String sequenceString : sequences) {
 				MidiUtils.addTrack(o, instrument, tempo, sequenceString.toCharArray());
 			}
 			setSequence(o);
 		}
+	}
+
+	public void addTrack(int instrument, int tempo, String notes) {
+		MidiUtils.addTrack(o, instrument, tempo, notes.toCharArray());
+		setSequence(o);
 	}
 
 	private void setSequence(Sequence sequence) {
@@ -273,9 +301,6 @@ public class CubeSequence {
 	}
 
 	public CubeSequence loop() {
-		if (sequences.isEmpty())
-			add(1, MidiUtils.randomNotes());
-
 		sequencer.setLoopCount(Sequencer.LOOP_CONTINUOUSLY);
 		play();
 
@@ -305,6 +330,7 @@ public class CubeSequence {
 	 * @author wonka
 	 */
 	public CubeSequence write(CubeString path) {
+		checkIfNeedsRandomization();
 		MidiUtils.write(o, path.o);
 		return this;
 	}
@@ -334,7 +360,73 @@ public class CubeSequence {
 	 * @author wonka
 	 */
 	public CubeSequence save(CubeString path) {
-		$f(path + FILE_EXTENSION).append(this.toString());
+		checkIfNeedsRandomization();
+		$f(path + FILE_EXTENSION).write(this.toString());
+		return this;
+	}
+
+	/**
+	 * Renders in the WAV format.
+	 * 
+	 * @param file
+	 *            destination.
+	 * @return this.
+	 * @since 08/07/2013
+	 * @author wonka
+	 */
+	public CubeSequence wav(CubeFile file) {
+		checkIfNeedsRandomization();
+		MidiUtils.renderWav(o, file.o);
+		return this;
+	}
+
+	/**
+	 * Renders in the WAV format.
+	 * 
+	 * @param file
+	 *            destination.
+	 * @return this.
+	 * @since 08/07/2013
+	 * @author wonka
+	 */
+	public CubeSequence wav(String file) {
+		return wav($f($(file)));
+	}
+
+	/**
+	 * Renders to WAV, encodes to MP3 and removes the original WAV.
+	 * 
+	 * @param file
+	 *            destination.
+	 * @return this.
+	 * @since 09/07/2013
+	 * @author wonka
+	 */
+	public CubeSequence mp3(CubeFile file) {
+		checkIfNeedsRandomization();
+		MidiUtils.renderWav(o, file.o);
+		AudioUtils.lameEncode(file.o.getPath(), true);
+		return this;
+	}
+
+	public CubeSequence mp3(String file) {
+		return mp3($f($(file)));
+	}
+
+	/**
+	 * Creates the MIDI, .csq, and WAV files.
+	 * 
+	 * @param file
+	 *            destination.
+	 * @return this.
+	 * @since 08/07/2013
+	 * @author wonka
+	 */
+	public CubeSequence publish(String file) {
+		String fileName = $(file).o;
+		save(fileName);
+		write(fileName + ".midi");
+		mp3(fileName + ".wav");
 		return this;
 	}
 
