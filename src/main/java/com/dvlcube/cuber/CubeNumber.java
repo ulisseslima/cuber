@@ -1,5 +1,7 @@
 package com.dvlcube.cuber;
 
+import com.dvlcube.cuber.utils.NumberUtils;
+
 /**
  * 
  * @author wonka
@@ -51,6 +53,16 @@ public class CubeNumber {
 		return this;
 	}
 
+	public CubeNumber limit(double l1, double l2) {
+		if (o < l1)
+			o = l1;
+
+		if (o > l2)
+			o = l2;
+
+		return this;
+	}
+
 	public int i() {
 		return o.intValue();
 	}
@@ -61,5 +73,10 @@ public class CubeNumber {
 
 	public float f() {
 		return o.floatValue();
+	}
+
+	@Override
+	public String toString() {
+		return o.toString();
 	}
 }
