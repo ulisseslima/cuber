@@ -25,18 +25,17 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * The default ffmpeg executable locator, which exports on disk the ffmpeg
- * executable bundled with the library distributions. It should work both for
- * windows and many linux distributions. If it doesn't, try compiling your own
- * ffmpeg executable and plug it in JAVE with a custom {@link FFMPEGLocator}.
+ * The default ffmpeg executable locator, which exports on disk the ffmpeg executable bundled with the library
+ * distributions. It should work both for windows and many linux distributions. If it doesn't, try compiling
+ * your own ffmpeg executable and plug it in JAVE with a custom {@link FFMPEGLocator}.
  * 
  * @author Carlo Pelliccia
  */
 public class DefaultFFMPEGLocator extends FFMPEGLocator {
 
 	/**
-	 * Trace the version of the bundled ffmpeg executable. It's a counter: every
-	 * time the bundled ffmpeg change it is incremented by 1.
+	 * Trace the version of the bundled ffmpeg executable. It's a counter: every time the bundled ffmpeg
+	 * change it is incremented by 1.
 	 */
 	private static final int myEXEversion = 1;
 
@@ -46,8 +45,7 @@ public class DefaultFFMPEGLocator extends FFMPEGLocator {
 	private String path;
 
 	/**
-	 * It builds the default FFMPEGLocator, exporting the ffmpeg executable on a
-	 * temp file.
+	 * It builds the default FFMPEGLocator, exporting the ffmpeg executable on a temp file.
 	 */
 	public DefaultFFMPEGLocator() {
 		// Windows?
@@ -59,8 +57,7 @@ public class DefaultFFMPEGLocator extends FFMPEGLocator {
 			isWindows = false;
 		}
 		// Temp dir?
-		File temp = new File(System.getProperty("java.io.tmpdir"), "jave-"
-				+ myEXEversion);
+		File temp = new File(System.getProperty("java.io.tmpdir"), "jave-" + myEXEversion);
 		if (!temp.exists()) {
 			temp.mkdirs();
 			temp.deleteOnExit();
@@ -82,18 +79,13 @@ public class DefaultFFMPEGLocator extends FFMPEGLocator {
 		if (!isWindows) {
 			Runtime runtime = Runtime.getRuntime();
 			try {
-				runtime.exec(new String[] { "/bin/chmod", "755",
-						exe.getAbsolutePath() });
+				runtime.exec(new String[] { "/bin/chmod", "755", exe.getAbsolutePath() });
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 		// Ok.
-		this.path = exe.getAbsolutePath();
-	}
-
-	protected String getFFMPEGExecutablePath() {
-		return path;
+		path = exe.getAbsolutePath();
 	}
 
 	/**
@@ -118,8 +110,7 @@ public class DefaultFFMPEGLocator extends FFMPEGLocator {
 				output.write(buffer, 0, l);
 			}
 		} catch (IOException e) {
-			throw new RuntimeException("Cannot write file "
-					+ dest.getAbsolutePath());
+			throw new RuntimeException("Cannot write file " + dest.getAbsolutePath());
 		} finally {
 			if (output != null) {
 				try {
@@ -138,4 +129,8 @@ public class DefaultFFMPEGLocator extends FFMPEGLocator {
 		}
 	}
 
+	@Override
+	protected String getFFMPEGExecutablePath() {
+		return path;
+	}
 }
