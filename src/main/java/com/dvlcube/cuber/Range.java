@@ -6,7 +6,21 @@ package com.dvlcube.cuber;
  * @since 16/09/2012
  */
 public class Range<T> {
+	/**
+	 * Shortcut.
+	 * 
+	 * @param start
+	 * @param end
+	 * @return range from start to end;
+	 * @author wonka
+	 * @since 13/07/2013
+	 */
+	public static <T> Range<T> $range(final T start, final T end) {
+		return new Range<T>(start, end);
+	}
+
 	private final T end;
+
 	private final T start;
 
 	/**
