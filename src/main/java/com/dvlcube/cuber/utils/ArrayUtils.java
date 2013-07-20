@@ -35,7 +35,7 @@ public class ArrayUtils {
 	/**
 	 * @param first
 	 * @param rest
-	 * @return
+	 * @return resulting array.
 	 * @author wonka
 	 * @since 05/04/2013
 	 */
