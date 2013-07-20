@@ -11,6 +11,30 @@ import com.dvlcube.cuber.utils.StringUtils.Expand;
 public class CubeString {
 	public String o = "";
 
+	public CubeString() {
+
+	}
+
+	/**
+	 * @param string
+	 * @param indexes
+	 * @author wonka
+	 * @since 13/07/2013
+	 */
+	public CubeString(char[] string, int... indexes) {
+		if (string != null) {
+			StringBuilder builder = new StringBuilder();
+			for (int i : indexes) {
+				if (i < string.length) {
+					builder.append(string[i]);
+				}
+			}
+			reset(builder.toString());
+		} else {
+			reset("");
+		}
+	}
+
 	/**
 	 * @param string
 	 * @author wonka
@@ -20,12 +44,32 @@ public class CubeString {
 		reset(string);
 	}
 
-	public CubeString() {
-
+	/**
+	 * @param string
+	 *            string.
+	 * @param times
+	 *            times to repeat.
+	 * @author wonka
+	 * @since 13/07/2013
+	 */
+	public CubeString(String string, int times) {
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < times; i++) {
+			builder.append(string);
+		}
+		reset(builder.toString());
 	}
 
 	public CubeString escapeHTML() {
 		return new CubeString(StringUtils.escapeHTML(o));
+	}
+
+	public Integer i() {
+		try {
+			return Integer.parseInt(o);
+		} catch (Exception e) {
+			return 0;
+		}
 	}
 
 	public boolean isBlank() {
@@ -36,13 +80,13 @@ public class CubeString {
 		return !isBlank();
 	}
 
+	public final void reset(String string) {
+		o = Expand.that(string);
+	}
+
 	public CubeString scramble() {
 		o = StringUtils.scramble(o);
 		return this;
-	}
-
-	public final void reset(String string) {
-		o = Expand.that(string);
 	}
 
 	@Override
