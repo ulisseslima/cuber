@@ -12,7 +12,7 @@ import com.dvlcube.cuber.utils.ArrayUtils;
  * @since 15/04/2013
  */
 public class CubeArray<T> {
-	public T[] array;
+	public T[] o;
 
 	/**
 	 * @param array
@@ -20,7 +20,13 @@ public class CubeArray<T> {
 	 * @since 15/04/2013
 	 */
 	public CubeArray(T[] array) {
-		this.array = array;
+		this.o = array;
+	}
+
+	@SafeVarargs
+	public CubeArray(T[] array, T[]... arrays) {
+		this.o = array;
+		concat(arrays);
 	}
 
 	/**
@@ -29,20 +35,21 @@ public class CubeArray<T> {
 	 * @since 15/04/2013
 	 */
 	public Set<T> asSet() {
-		return ArrayUtils.asSet(array);
+		return ArrayUtils.asSet(o);
 	}
 
 	@SafeVarargs
-	public final T[] concat(T[]... rest) {
-		return ArrayUtils.concat(array, rest);
+	public final CubeArray<T> concat(T[]... rest) {
+		o = ArrayUtils.concat(o, rest);
+		return this;
 	}
 
 	public Set<T> concatIntoSet(Collection<T> collection) {
-		return ArrayUtils.concatIntoSet(array, collection);
+		return ArrayUtils.concatIntoSet(o, collection);
 	}
 
 	@Override
 	public String toString() {
-		return Arrays.toString(array);
+		return Arrays.toString(o);
 	}
 }
