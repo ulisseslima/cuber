@@ -18,43 +18,6 @@ import com.dvlcube.cuber.factory.MP3TaggingFactory;
  */
 public class AudioUtils {
 	/**
-	 * @param artist
-	 *            artist name.
-	 * @param albumName
-	 *            album name.
-	 * @param songName
-	 *            song name.
-	 * @param i
-	 *            track number.
-	 * @param mp3
-	 *            the mp3 file.
-	 * @since 09/07/2013
-	 * @author wonka
-	 */
-	public static void tag(String artist, String albumName, String songName, int i, File mp3) {
-		MP3TaggingFactory.main(new String[] { mp3.getPath(), //
-				"--album=" + albumName, //
-				"--artist=" + artist,//
-				"--genre=Random", //
-				"--number=" + i, //
-				"--song=" + songName,//
-				"--year=" + $date().year() });
-	}
-
-	/**
-	 * @param artist
-	 * @param albumName
-	 * @param songName
-	 * @param i
-	 * @param mp3
-	 * @since 09/07/2013
-	 * @author wonka
-	 */
-	public static void tag(String artist, String albumName, String songName, int i, String mp3) {
-		tag(artist, albumName, songName, i, new File(mp3));
-	}
-
-	/**
 	 * @param file
 	 *            the WAV file.
 	 * @return the resulting mp3 file.
@@ -92,12 +55,54 @@ public class AudioUtils {
 		Encoder encoder = new Encoder();
 		try {
 			encoder.encode(source, target, attrs);
-			if (removeOriginal)
+			if (removeOriginal) {
 				new File(wavFile).delete();
+			}
 			return target;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	/**
+	 * @param artist
+	 *            artist name.
+	 * @param albumName
+	 *            album name.
+	 * @param songName
+	 *            song name.
+	 * @param genre
+	 *            genre.
+	 * @param i
+	 *            track number.
+	 * @param mp3
+	 *            the mp3 file.
+	 * @since 09/07/2013
+	 * @author wonka
+	 */
+	public static void tag(String artist, String albumName, String songName, String genre, int i, File mp3) {
+		MP3TaggingFactory.main(new String[] { mp3.getPath(), //
+				"--album=" + albumName, //
+				"--artist=" + artist,//
+				"--genre=" + genre, //
+				"--number=" + i, //
+				"--song=" + songName,//
+				"--year=" + $date().year() });
+	}
+
+	/**
+	 * @param artist
+	 * @param albumName
+	 * @param songName
+	 * @param genre
+	 *            TODO
+	 * @param i
+	 * @param mp3
+	 * @since 09/07/2013
+	 * @author wonka
+	 */
+	public static void tag(String artist, String albumName, String songName, String genre, int i, String mp3) {
+		tag(artist, albumName, songName, genre, i, new File(mp3));
 	}
 }
