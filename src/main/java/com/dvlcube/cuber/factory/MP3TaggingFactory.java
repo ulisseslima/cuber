@@ -13,6 +13,7 @@ import org.farng.mp3.TagOptionSingleton;
 import org.farng.mp3.id3.AbstractID3v2;
 import org.farng.mp3.id3.ID3v2_3;
 
+import com.dvlcube.cuber.Cuber;
 import com.dvlcube.cuber.factory.MP3TaggingFactory.Command.Option;
 
 /**
@@ -30,13 +31,13 @@ public class MP3TaggingFactory {
 		public enum Option {
 			album {
 				@Override
-				public void process(final ID3v2_3 tag, final String value) {
+				public void process(final AbstractID3v2 tag, final String value) {
 					tag.setAlbumTitle(value);
 					super.process(tag, value);
 				}
 
 				@Override
-				public void process(final AbstractID3v2 tag, final String value) {
+				public void process(final ID3v2_3 tag, final String value) {
 					tag.setAlbumTitle(value);
 					super.process(tag, value);
 				}
@@ -126,6 +127,18 @@ public class MP3TaggingFactory {
 
 			/**
 			 * @param tag
+			 * @param option
+			 * @param value
+			 * @since 09/07/2013
+			 * @author wonka
+			 */
+			protected static void doProcessing(AbstractID3v2 tag, String optionName, String value) {
+				final Option option = Option.find(optionName);
+				option.process(tag, value);
+			}
+
+			/**
+			 * @param tag
 			 * @param string
 			 * @param valueMatch
 			 * @author wonka
@@ -146,24 +159,12 @@ public class MP3TaggingFactory {
 				return valueOf(optionName.replace(Option.PREFIX, ""));
 			}
 
-			public void process(final ID3v2_3 tag, final String value) {
-				log("\tSetting " + name() + " to " + value);
-			}
-
 			public void process(final AbstractID3v2 tag, final String value) {
 				log("\tSetting " + name() + " to " + value);
 			}
 
-			/**
-			 * @param tag
-			 * @param option
-			 * @param value
-			 * @since 09/07/2013
-			 * @author wonka
-			 */
-			protected static void doProcessing(AbstractID3v2 tag, String optionName, String value) {
-				final Option option = Option.find(optionName);
-				option.process(tag, value);
+			public void process(final ID3v2_3 tag, final String value) {
+				log("\tSetting " + name() + " to " + value);
 			}
 		}
 
@@ -173,10 +174,10 @@ public class MP3TaggingFactory {
 		 * @param tag
 		 * @param option
 		 * @param value
+		 * @since 09/07/2013
 		 * @author wonka
-		 * @since 01/01/2013
 		 */
-		public static void process(final ID3v2_3 tag, final String option, final String value) {
+		public static void process(AbstractID3v2 tag, String option, String value) {
 			Option.doProcessing(tag, option, value);
 		}
 
@@ -184,10 +185,10 @@ public class MP3TaggingFactory {
 		 * @param tag
 		 * @param option
 		 * @param value
-		 * @since 09/07/2013
 		 * @author wonka
+		 * @since 01/01/2013
 		 */
-		public static void process(AbstractID3v2 tag, String option, String value) {
+		public static void process(final ID3v2_3 tag, final String option, final String value) {
 			Option.doProcessing(tag, option, value);
 		}
 
@@ -344,6 +345,13 @@ public class MP3TaggingFactory {
 		}
 
 		mp3.setID3v2Tag(tag);
+		File f = mp3.getMp3file();
+		int attempts = 0;
+		while (!f.canWrite() && attempts < 10) {
+			Cuber.$debug().sleeps(10);
+			attempts++;
+			Cuber.$out("can't write " + mp3.getMp3file().getName() + ", attempts: " + attempts);
+		}
 		mp3.save();
 		log("}");
 	}
