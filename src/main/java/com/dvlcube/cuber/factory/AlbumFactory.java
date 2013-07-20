@@ -5,6 +5,7 @@ import static com.dvlcube.cuber.Cuber.$f;
 import static com.dvlcube.cuber.Cuber.$img;
 import static com.dvlcube.cuber.Cuber.$midi;
 
+import java.io.File;
 import java.util.Random;
 
 import com.dvlcube.cuber.CubeFile;
@@ -16,7 +17,8 @@ import com.dvlcube.cuber.utils.AudioUtils;
  * @author wonka
  */
 public class AlbumFactory {
-	private static final String ARTIST = "DvlCube";
+	private static final String ARTIST = "dvlcube";
+	private static final String GENRE = "Procedural";
 
 	/**
 	 * @param args
@@ -25,9 +27,13 @@ public class AlbumFactory {
 	 */
 	public static void main(String[] args) {
 		if (args.length < 1) {
-			System.out.println("album folder not specified.");
+			System.out.println($midi().play());
 		} else {
-			new AlbumFactory().createAlbum(args[0]);
+			if (new File(args[0]).isDirectory()) {
+				new AlbumFactory().createAlbum(args[0]);
+			} else {
+				$midi(args).play();
+			}
 		}
 	}
 
@@ -56,7 +62,7 @@ public class AlbumFactory {
 			String songPath = albumDir + "/" + i + " - " + songName;
 			tempoCount += $midi().publish(songPath).tempo;
 
-			AudioUtils.tag(ARTIST, albumName, songName, i, songPath + ".mp3");
+			AudioUtils.tag(ARTIST, albumName, songName, GENRE, i, songPath + ".mp3");
 			$f(songPath + ".original.mp3").rm();
 			$f(songPath + ".csq").mv(extrasDir);
 			$f(songPath + ".midi").mv(extrasDir);
