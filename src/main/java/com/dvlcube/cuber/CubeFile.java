@@ -1,3 +1,19 @@
+/*
+  This file is part of Cuber.
+
+    Cuber is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Cuber is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Cuber.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.dvlcube.cuber;
 
 import java.io.BufferedWriter;
@@ -20,24 +36,11 @@ public class CubeFile {
 
 	/**
 	 * @param path
-	 * @since 25/06/2013
+	 * @since 04/07/2013
 	 * @author wonka
 	 */
-	public CubeFile(String path, boolean create) {
-		o = new File(path);
-		if (!o.isFile()) {
-			if (create)
-				try {
-					if (path.endsWith("/"))
-						o.mkdir();
-					else
-						o.createNewFile();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			else
-				throw new IllegalArgumentException("not a file: '" + path + "'");
-		}
+	public CubeFile(CubeString path) {
+		this(path.o, true);
 	}
 
 	public CubeFile(String path) {
@@ -46,23 +49,26 @@ public class CubeFile {
 
 	/**
 	 * @param path
-	 * @since 04/07/2013
+	 * @since 25/06/2013
 	 * @author wonka
 	 */
-	public CubeFile(CubeString path) {
-		this(path.o, true);
-	}
-
-	public boolean isDir() {
-		return o.isDirectory();
-	}
-
-	public String firstLine() {
-		return FileUtils.firstLine(o);
-	}
-
-	public List<String> head(int lines) {
-		return FileUtils.head(o, lines);
+	public CubeFile(String path, boolean create) {
+		o = new File(path);
+		if (!o.isFile()) {
+			if (create) {
+				try {
+					if (path.endsWith("/")) {
+						o.mkdir();
+					} else {
+						o.createNewFile();
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} else {
+				throw new IllegalArgumentException("not a file: '" + path + "'");
+			}
+		}
 	}
 
 	/**
@@ -84,23 +90,12 @@ public class CubeFile {
 		return this;
 	}
 
-	/**
-	 * Overwrites a file.
-	 * 
-	 * @param line
-	 *            line to write.
-	 * @return this.
-	 * @since 08/07/2013
-	 * @author wonka
-	 */
-	public CubeFile write(String line) {
-		try (PrintWriter writer = new PrintWriter(o)) {
-			writer.write(line);
-			writer.flush();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		return this;
+	public String firstLine() {
+		return FileUtils.firstLine(o);
+	}
+
+	public List<String> head(int lines) {
+		return FileUtils.head(o, lines);
 	}
 
 	/**
@@ -111,13 +106,19 @@ public class CubeFile {
 	 * @author wonka
 	 */
 	public boolean is(String extension) {
-		if (o == null)
+		if (o == null) {
 			throw new IllegalStateException("file was not initialized");
+		}
 
-		if (o.getPath().endsWith(extension))
+		if (o.getPath().endsWith(extension)) {
 			return true;
+		}
 
 		return false;
+	}
+
+	public boolean isDir() {
+		return o.isDirectory();
 	}
 
 	/**
@@ -128,16 +129,41 @@ public class CubeFile {
 	 * @author wonka
 	 */
 	public CubeFile mkdir(String dir) {
-		if (o == null)
+		if (o == null) {
 			throw new IllegalStateException("file was not initialized");
+		}
 
-		if (!o.isDirectory())
+		if (!o.isDirectory()) {
 			throw new IllegalStateException("this is not a dir");
+		}
 
 		File newDir = new File(o.getPath() + "/" + dir);
 		o = newDir;
 		newDir.mkdir();
 		return this;
+	}
+
+	/**
+	 * Moves this file to another location.
+	 * 
+	 * @param dir
+	 *            destination.
+	 * @return this.
+	 * @since 09/07/2013
+	 * @author wonka
+	 */
+	public CubeFile mv(String dir) {
+		o = FileUtils.moveFileToDirectory(o, new File(dir));
+		return this;
+	}
+
+	/**
+	 * @return this file name, without the extension.
+	 * @since 09/07/2013
+	 * @author wonka
+	 */
+	public String nameSansExtension() {
+		return FileUtils.removeExtension(o.getPath());
 	}
 
 	/**
@@ -148,11 +174,13 @@ public class CubeFile {
 	 * @author wonka
 	 */
 	public CubeFile newFile(String name) {
-		if (o == null)
+		if (o == null) {
 			throw new IllegalStateException("file was not initialized");
+		}
 
-		if (!o.isDirectory())
+		if (!o.isDirectory()) {
 			throw new IllegalStateException("this is not a dir");
+		}
 
 		try {
 			File newFile = new File(o.getPath() + "/" + name);
@@ -173,31 +201,27 @@ public class CubeFile {
 		o.delete();
 	}
 
-	/**
-	 * @return this file name, without the extension.
-	 * @since 09/07/2013
-	 * @author wonka
-	 */
-	public String nameSansExtension() {
-		return FileUtils.removeExtension(o.getPath());
-	}
-
-	/**
-	 * Moves this file to another location.
-	 * 
-	 * @param dir
-	 *            destination.
-	 * @return this.
-	 * @since 09/07/2013
-	 * @author wonka
-	 */
-	public CubeFile mv(String dir) {
-		o = FileUtils.moveFileToDirectory(o, new File(dir));
-		return this;
-	}
-
 	@Override
 	public String toString() {
 		return o.toString();
+	}
+
+	/**
+	 * Overwrites a file.
+	 * 
+	 * @param line
+	 *            line to write.
+	 * @return this.
+	 * @since 08/07/2013
+	 * @author wonka
+	 */
+	public CubeFile write(String line) {
+		try (PrintWriter writer = new PrintWriter(o)) {
+			writer.write(line);
+			writer.flush();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		return this;
 	}
 }

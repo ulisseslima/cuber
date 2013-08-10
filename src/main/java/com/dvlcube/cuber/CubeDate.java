@@ -1,3 +1,19 @@
+/*
+  This file is part of Cuber.
+
+    Cuber is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Cuber is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Cuber.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.dvlcube.cuber;
 
 import java.text.SimpleDateFormat;
@@ -12,9 +28,9 @@ import com.dvlcube.cuber.utils.DateUtils;
  * @since 28/02/2013
  */
 public class CubeDate {
-	public Calendar o;
 	public String pattern = "yyyy-MM-dd_HH-mm-ss.SSS";
-	private final SimpleDateFormat _ = new SimpleDateFormat(pattern);
+	private final SimpleDateFormat patternFormat = new SimpleDateFormat(pattern);
+	public Calendar o;
 
 	public CubeDate() {
 		o = Calendar.getInstance();
@@ -23,7 +39,7 @@ public class CubeDate {
 	public CubeDate(String pattern) {
 		this();
 		this.pattern = pattern;
-		_.applyPattern(pattern);
+		patternFormat.applyPattern(pattern);
 	}
 
 	public CubeDate newDateInRange(Calendar cStart, Calendar cEnd) {
@@ -48,17 +64,8 @@ public class CubeDate {
 
 	public CubeDate setPattern(String pattern) {
 		this.pattern = pattern;
-		_.applyPattern(pattern);
+		patternFormat.applyPattern(pattern);
 		return this;
-	}
-
-	/**
-	 * @return the year.
-	 * @since 09/07/2013
-	 * @author wonka
-	 */
-	public int year() {
-		return o.get(Calendar.YEAR);
 	}
 
 	/**
@@ -72,6 +79,15 @@ public class CubeDate {
 
 	@Override
 	public String toString() {
-		return _.format(o.getTime());
+		return patternFormat.format(o.getTime());
+	}
+
+	/**
+	 * @return the year.
+	 * @since 09/07/2013
+	 * @author wonka
+	 */
+	public int year() {
+		return o.get(Calendar.YEAR);
 	}
 }
