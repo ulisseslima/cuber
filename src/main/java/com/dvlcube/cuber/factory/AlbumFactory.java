@@ -33,9 +33,6 @@ import com.dvlcube.cuber.utils.AudioUtils;
  * @author wonka
  */
 public class AlbumFactory {
-	private static final String ARTIST = "dvlcube";
-	private static final String GENRE = "Procedural";
-
 	/**
 	 * @param args
 	 * @since 09/07/2013
@@ -46,29 +43,30 @@ public class AlbumFactory {
 			System.out.println($midi().play());
 		} else {
 			if (new File(args[0]).isDirectory()) {
-				new AlbumFactory().createAlbum(args[0]);
+				new AlbumFactory().createRandomAlbum(args[0]);
 			} else {
 				$midi(args).play();
 			}
 		}
 	}
 
-	private final Random random = new Random();
+	public static final Random random = new Random();
 
 	/**
-	 * Creates a random music album.
+	 * Creates a random music album at the specified location.
 	 * 
 	 * @param dir
 	 *            destination.
 	 * @since 09/07/2013
 	 * @author wonka
 	 */
-	public void createAlbum(String dir) {
+	public void createRandomAlbum(String dir) {
 		String albumName = $("${name}").o + " " + $("${name}").o;
 		CubeFile f = $f(dir + "/" + albumName + "/");
 		String albumDir = f.o.getPath();
 		String extrasDir = albumDir + "/" + "extras";
-		$img(640, 480).label(ARTIST + "_" + albumName).write(f.newFile(albumName + ".png"));
+		$img(640, 480).label(Album.ARTIST + "_" + albumName).write(
+				f.newFile(albumName + ".png"));
 
 		int i = 1;
 		int tempoGoal = 1500;
@@ -78,7 +76,8 @@ public class AlbumFactory {
 			String songPath = albumDir + "/" + i + " - " + songName;
 			tempoCount += $midi().publish(songPath).tempo;
 
-			AudioUtils.tag(ARTIST, albumName, songName, GENRE, i, songPath + ".mp3");
+			AudioUtils.tag(Album.ARTIST, albumName, songName, Album.GENRE, i,
+					songPath + ".mp3");
 			$f(songPath + ".original.mp3").rm();
 			$f(songPath + ".csq").mv(extrasDir);
 			$f(songPath + ".midi").mv(extrasDir);
@@ -87,7 +86,18 @@ public class AlbumFactory {
 		}
 	}
 
-	private String createSongName() {
+	/**
+	 * Creates a random music album with MIDI tracks.
+	 * 
+	 * @author Ulisses Lima
+	 * @since 02/03/2015
+	 */
+	public RandomMidiAlbum createRandomMidiAlbum() {
+		RandomMidiAlbum album = new RandomMidiAlbum();
+		return album;
+	}
+
+	public static String createSongName() {
 		int names = random.nextInt(3) + 1;
 		String songName = "";
 		for (int j = 0; j < names; j++) {
