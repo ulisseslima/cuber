@@ -32,6 +32,7 @@ import java.util.regex.Pattern;
  * 
  * @author Carlo Pelliccia
  */
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class Encoder {
 
 	/**
@@ -135,11 +136,10 @@ public class Encoder {
 		ArrayList res = new ArrayList();
 		FFMPEGExecutor ffmpeg = locator.createExecutor();
 		ffmpeg.addArgument("-formats");
-		try {
+		try (RBufferedReader reader = new RBufferedReader(
+				new InputStreamReader(ffmpeg.getInputStream()))) {
 			ffmpeg.execute();
-			RBufferedReader reader = null;
-			reader = new RBufferedReader(new InputStreamReader(ffmpeg
-					.getInputStream()));
+
 			String line;
 			boolean evaluate = false;
 			while ((line = reader.readLine()) != null) {
@@ -189,11 +189,9 @@ public class Encoder {
 		ArrayList res = new ArrayList();
 		FFMPEGExecutor ffmpeg = locator.createExecutor();
 		ffmpeg.addArgument("-formats");
-		try {
+		try (RBufferedReader reader = new RBufferedReader(
+				new InputStreamReader(ffmpeg.getInputStream()))) {
 			ffmpeg.execute();
-			RBufferedReader reader = null;
-			reader = new RBufferedReader(new InputStreamReader(ffmpeg
-					.getInputStream()));
 			String line;
 			boolean evaluate = false;
 			while ((line = reader.readLine()) != null) {
@@ -243,11 +241,9 @@ public class Encoder {
 		ArrayList res = new ArrayList();
 		FFMPEGExecutor ffmpeg = locator.createExecutor();
 		ffmpeg.addArgument("-formats");
-		try {
+		try (RBufferedReader reader = new RBufferedReader(
+				new InputStreamReader(ffmpeg.getInputStream()))) {
 			ffmpeg.execute();
-			RBufferedReader reader = null;
-			reader = new RBufferedReader(new InputStreamReader(ffmpeg
-					.getInputStream()));
 			String line;
 			boolean evaluate = false;
 			while ((line = reader.readLine()) != null) {
@@ -297,11 +293,9 @@ public class Encoder {
 		ArrayList res = new ArrayList();
 		FFMPEGExecutor ffmpeg = locator.createExecutor();
 		ffmpeg.addArgument("-formats");
-		try {
+		try (RBufferedReader reader = new RBufferedReader(
+				new InputStreamReader(ffmpeg.getInputStream()))) {
 			ffmpeg.execute();
-			RBufferedReader reader = null;
-			reader = new RBufferedReader(new InputStreamReader(ffmpeg
-					.getInputStream()));
 			String line;
 			boolean evaluate = false;
 			while ((line = reader.readLine()) != null) {
@@ -353,11 +347,9 @@ public class Encoder {
 		ArrayList res = new ArrayList();
 		FFMPEGExecutor ffmpeg = locator.createExecutor();
 		ffmpeg.addArgument("-formats");
-		try {
+		try (RBufferedReader reader = new RBufferedReader(
+				new InputStreamReader(ffmpeg.getInputStream()))) {
 			ffmpeg.execute();
-			RBufferedReader reader = null;
-			reader = new RBufferedReader(new InputStreamReader(ffmpeg
-					.getInputStream()));
 			String line;
 			boolean evaluate = false;
 			while ((line = reader.readLine()) != null) {
@@ -412,11 +404,9 @@ public class Encoder {
 		ArrayList res = new ArrayList();
 		FFMPEGExecutor ffmpeg = locator.createExecutor();
 		ffmpeg.addArgument("-formats");
-		try {
+		try (RBufferedReader reader = new RBufferedReader(
+				new InputStreamReader(ffmpeg.getInputStream()))) {
 			ffmpeg.execute();
-			RBufferedReader reader = null;
-			reader = new RBufferedReader(new InputStreamReader(ffmpeg
-					.getInputStream()));
 			String line;
 			boolean evaluate = false;
 			while ((line = reader.readLine()) != null) {

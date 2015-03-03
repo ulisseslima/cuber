@@ -1,10 +1,5 @@
 package org.farng.mp3.id3;
 
-import org.farng.mp3.AbstractMP3Tag;
-import org.farng.mp3.TagException;
-import org.farng.mp3.TagNotFoundException;
-import org.farng.mp3.TagUtility;
-
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.Collection;
@@ -14,12 +9,18 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.farng.mp3.AbstractMP3Tag;
+import org.farng.mp3.TagException;
+import org.farng.mp3.TagNotFoundException;
+import org.farng.mp3.TagUtility;
+
 /**
  * Superclass for all ID3v2 tags
  *
  * @author Eric Farng
  * @version $Revision: 1.5 $
  */
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public abstract class AbstractID3v2 extends AbstractID3 {
 
     /**

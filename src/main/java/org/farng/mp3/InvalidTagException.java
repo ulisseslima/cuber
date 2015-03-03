@@ -14,9 +14,11 @@ import java.io.ObjectOutputStream;
  */
 public class InvalidTagException extends TagException {
 
-    /**
-     * Creates a new InvalidTagException object.
-     */
+	private static final long serialVersionUID = -6862541432784433504L;
+
+	/**
+	 * Creates a new InvalidTagException object.
+	 */
     public InvalidTagException() {
         super();
     }

@@ -1,5 +1,10 @@
 package org.farng.mp3.filename;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.util.Iterator;
+
 import org.farng.mp3.AbstractMP3Tag;
 import org.farng.mp3.MP3File;
 import org.farng.mp3.TagConstant;
@@ -19,11 +24,6 @@ import org.farng.mp3.id3.FrameBodyUSLT;
 import org.farng.mp3.id3.ID3v2_3Frame;
 import org.farng.mp3.id3.ID3v2_4;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.util.Iterator;
-
 /**
  * This class represents the filename. To create it, invoke <code>FilenameTagBuilder.createFilenameTagFromMP3File</code>
  * which returns a complete parsed, evaluated, and matched FilenameTag.
@@ -31,6 +31,7 @@ import java.util.Iterator;
  * @author Eric Farng
  * @version $Revision: 1.5 $
  */
+@SuppressWarnings({ "rawtypes" })
 public class FilenameTag extends AbstractMP3Tag {
 
     /**

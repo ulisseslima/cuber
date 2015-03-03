@@ -1,12 +1,12 @@
 package org.farng.mp3.filename;
 
+import java.util.Iterator;
+
 import org.farng.mp3.MP3File;
 import org.farng.mp3.TagException;
 import org.farng.mp3.TagOptionSingleton;
 import org.farng.mp3.TagUtility;
 import org.farng.mp3.id3.ID3v2_4;
-
-import java.util.Iterator;
 
 /**
  * This class builds a <code>FilenameTag</code>. The main method to call is <code>createFilenameTagFromMP3File</code>.
@@ -15,6 +15,7 @@ import java.util.Iterator;
  * @author Eric Farng
  * @version $Revision: 1.2 $
  */
+@SuppressWarnings({ "rawtypes" })
 public class FilenameTagBuilder {
 
     private FilenameTagBuilder() {

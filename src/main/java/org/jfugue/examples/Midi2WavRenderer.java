@@ -47,6 +47,7 @@ import javax.sound.sampled.AudioSystem;
 
 import com.sun.media.sound.AudioSynthesizer;
 
+@SuppressWarnings("restriction")
 public class Midi2WavRenderer {
 	private final Synthesizer synth;
 

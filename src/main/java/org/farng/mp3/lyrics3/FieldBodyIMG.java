@@ -1,13 +1,13 @@
 package org.farng.mp3.lyrics3;
 
+import java.io.RandomAccessFile;
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import org.farng.mp3.InvalidTagException;
 import org.farng.mp3.TagConstant;
 import org.farng.mp3.TagOptionSingleton;
 import org.farng.mp3.object.ObjectLyrics3Image;
-
-import java.io.RandomAccessFile;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * Link to an image files (BMP or JPG format). Image lines include filename, description and timestamp separated by
@@ -27,6 +27,7 @@ import java.util.Iterator;
  * @author Eric Farng
  * @version $Revision: 1.4 $
  */
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class FieldBodyIMG extends AbstractLyrics3v2FieldBody {
 
     private ArrayList images = new ArrayList();

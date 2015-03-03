@@ -1,10 +1,10 @@
 package org.farng.mp3.object;
 
-import org.farng.mp3.TagConstant;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.TreeSet;
+
+import org.farng.mp3.TagConstant;
 
 /**
  * ID3v2 and Lyrics3v2 tags have individual fields <code>AbstractMP3Fragment</code>s Then each fragment is broken down
@@ -13,6 +13,7 @@ import java.util.TreeSet;
  * @author Eric Farng
  * @version $Revision: 1.4 $
  */
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class ObjectStringHashMap extends ObjectStringFixedLength implements ObjectHashMapInterface {
 
     public static final String LANGUAGE = "Language";

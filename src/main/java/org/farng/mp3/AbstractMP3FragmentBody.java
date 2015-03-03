@@ -1,15 +1,15 @@
 package org.farng.mp3;
 
-import org.farng.mp3.id3.ID3v2_2;
-import org.farng.mp3.id3.ID3v2_3;
-import org.farng.mp3.id3.ID3v2_4;
-import org.farng.mp3.object.AbstractMP3Object;
-
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import org.farng.mp3.id3.ID3v2_2;
+import org.farng.mp3.id3.ID3v2_3;
+import org.farng.mp3.id3.ID3v2_4;
+import org.farng.mp3.object.AbstractMP3Object;
 
 /**
  * This class is contained in the <code>AbstractMP3Fragment</code> and represents the actual data of tags. It contains
@@ -19,6 +19,7 @@ import java.util.List;
  * @author Eric Farng
  * @version $Revision: 1.6 $
  */
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public abstract class AbstractMP3FragmentBody extends AbstractMP3FileItem {
 
     private static final int SIZE_OBJECT_LIST = 16;

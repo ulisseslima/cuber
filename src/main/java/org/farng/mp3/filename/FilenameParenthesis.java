@@ -1,13 +1,13 @@
 package org.farng.mp3.filename;
 
+import java.util.Iterator;
+
 import org.farng.mp3.AbstractMP3Tag;
 import org.farng.mp3.TagOptionSingleton;
 import org.farng.mp3.TagUtility;
 import org.farng.mp3.id3.AbstractID3v2Frame;
 import org.farng.mp3.id3.AbstractID3v2FrameBody;
 import org.farng.mp3.id3.ID3v2_4;
-
-import java.util.Iterator;
 
 /**
  * This composite subclass is for parenthesis elements. It is different from the delimiter because it has three
@@ -16,6 +16,7 @@ import java.util.Iterator;
  * @author Eric Farng
  * @version $Revision: 1.4 $
  */
+@SuppressWarnings({ "rawtypes" })
 public class FilenameParenthesis extends FilenameDelimiter {
 
     /**

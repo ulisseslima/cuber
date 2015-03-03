@@ -31,6 +31,7 @@ import java.util.ArrayList;
  * 
  * @author Carlo Pelliccia
  */
+@SuppressWarnings({ "rawtypes", "unchecked" })
 class RBufferedReader extends BufferedReader {
 
 	/**

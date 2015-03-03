@@ -1,18 +1,5 @@
 package org.farng.mp3;
 
-import org.farng.mp3.filename.FilenameTag;
-import org.farng.mp3.filename.FilenameTagBuilder;
-import org.farng.mp3.id3.AbstractID3v2;
-import org.farng.mp3.id3.AbstractID3v2Frame;
-import org.farng.mp3.id3.ID3v1;
-import org.farng.mp3.id3.ID3v1_1;
-import org.farng.mp3.id3.ID3v2_2;
-import org.farng.mp3.id3.ID3v2_3;
-import org.farng.mp3.id3.ID3v2_4;
-import org.farng.mp3.lyrics3.AbstractLyrics3;
-import org.farng.mp3.lyrics3.Lyrics3v1;
-import org.farng.mp3.lyrics3.Lyrics3v2;
-
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,6 +12,19 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
+import org.farng.mp3.filename.FilenameTag;
+import org.farng.mp3.filename.FilenameTagBuilder;
+import org.farng.mp3.id3.AbstractID3v2;
+import org.farng.mp3.id3.AbstractID3v2Frame;
+import org.farng.mp3.id3.ID3v1;
+import org.farng.mp3.id3.ID3v1_1;
+import org.farng.mp3.id3.ID3v2_2;
+import org.farng.mp3.id3.ID3v2_3;
+import org.farng.mp3.id3.ID3v2_4;
+import org.farng.mp3.lyrics3.AbstractLyrics3;
+import org.farng.mp3.lyrics3.Lyrics3v1;
+import org.farng.mp3.lyrics3.Lyrics3v2;
 
 /**
  * <TABLE border=0> <TBODY> <TR> <TD class=h2>How is MP3 built?</TD></TR></TBODY></TABLE> <TABLE border=0> <TBODY> <TR
@@ -102,6 +102,7 @@ import java.util.Set;
  * @author Eric Farng
  * @version $Revision: 1.5 $
  */
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class MP3File {
 
     /**

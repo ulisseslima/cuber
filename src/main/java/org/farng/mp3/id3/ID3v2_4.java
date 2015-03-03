@@ -1,5 +1,9 @@
 package org.farng.mp3.id3;
 
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.util.Iterator;
+
 import org.farng.mp3.AbstractMP3Tag;
 import org.farng.mp3.InvalidTagException;
 import org.farng.mp3.MP3File;
@@ -10,10 +14,6 @@ import org.farng.mp3.filename.FilenameTag;
 import org.farng.mp3.lyrics3.AbstractLyrics3;
 import org.farng.mp3.lyrics3.Lyrics3v2;
 import org.farng.mp3.lyrics3.Lyrics3v2Field;
-
-import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.util.Iterator;
 
 /**
  * <p>&nbsp;&nbsp; ID3v2 is a general tagging format for audio, which makes it possible<br> &nbsp;&nbsp; to store meta
@@ -257,6 +257,7 @@ import java.util.Iterator;
  * @author Eric Farng
  * @version $Revision: 1.6 $
  */
+@SuppressWarnings({ "rawtypes" })
 public class ID3v2_4 extends ID3v2_3 {
 
     protected boolean footer = false;

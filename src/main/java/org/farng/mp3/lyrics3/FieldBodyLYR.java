@@ -1,5 +1,10 @@
 package org.farng.mp3.lyrics3;
 
+import java.io.RandomAccessFile;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+
 import org.farng.mp3.InvalidTagException;
 import org.farng.mp3.TagConstant;
 import org.farng.mp3.TagOptionSingleton;
@@ -10,11 +15,6 @@ import org.farng.mp3.object.ObjectID3v2LyricLine;
 import org.farng.mp3.object.ObjectLyrics3Line;
 import org.farng.mp3.object.ObjectLyrics3TimeStamp;
 
-import java.io.RandomAccessFile;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-
 /**
  * Lyrics multi line text. Timestamps can be used anywhere in the text in any order. Timestamp format is [mm:ss] (no
  * spaces allowed in the timestamps).
@@ -22,6 +22,7 @@ import java.util.Iterator;
  * @author Eric Farng
  * @version $Revision: 1.6 $
  */
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class FieldBodyLYR extends AbstractLyrics3v2FieldBody {
 
     private ArrayList lines = new ArrayList();

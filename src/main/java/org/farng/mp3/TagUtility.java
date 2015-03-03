@@ -21,6 +21,7 @@ import java.util.StringTokenizer;
  * @author Eric Farng
  * @version $Revision: 1.4 $
  */
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class TagUtility {
 
     /**

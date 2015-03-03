@@ -1,5 +1,7 @@
 package org.farng.mp3.filename;
 
+import java.util.Iterator;
+
 import org.farng.mp3.AbstractMP3Tag;
 import org.farng.mp3.TagOptionSingleton;
 import org.farng.mp3.id3.AbstractFrameBodyTextInformation;
@@ -10,14 +12,13 @@ import org.farng.mp3.id3.FrameBodyCOMM;
 import org.farng.mp3.id3.ID3v2_4;
 import org.farng.mp3.id3.ID3v2_4Frame;
 
-import java.util.Iterator;
-
 /**
  * This composite subclass is the leaf of the tree. It contains the actual strings found in the filename.
  *
  * @author Eric Farng
  * @version $Revision: 1.7 $
  */
+@SuppressWarnings({ "rawtypes" })
 public class FilenameToken extends AbstractFilenameComposite {
 
     /**

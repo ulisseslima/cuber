@@ -9,6 +9,7 @@ import java.util.NoSuchElementException;
  * @author Eric Farng
  * @version $Revision: 1.4 $
  */
+@SuppressWarnings({ "rawtypes" })
 public class Lyrics3v1Iterator implements Iterator {
 
     private Lyrics3v1 tag = null;

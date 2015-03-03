@@ -1,10 +1,10 @@
 package org.farng.mp3.filename;
 
+import java.util.Iterator;
+
 import org.farng.mp3.AbstractMP3Tag;
 import org.farng.mp3.id3.AbstractID3v2Frame;
 import org.farng.mp3.id3.ID3v2_4;
-
-import java.util.Iterator;
 
 /**
  * The file name is parsed into a composite with this class as the base composite class.
@@ -12,6 +12,7 @@ import java.util.Iterator;
  * @author Eric Farng
  * @version $Revision: 1.3 $
  */
+@SuppressWarnings({ "rawtypes" })
 public abstract class AbstractFilenameComposite {
 
     /**

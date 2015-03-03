@@ -1,14 +1,14 @@
 package org.farng.mp3.id3;
 
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.util.Iterator;
+
 import org.farng.mp3.AbstractMP3Tag;
 import org.farng.mp3.TagException;
 import org.farng.mp3.TagNotFoundException;
 import org.farng.mp3.TagOptionSingleton;
 import org.farng.mp3.TagUtility;
-
-import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.util.Iterator;
 
 /**
  * <TABLE border=0> <TBODY> <TR> <TD class=h2>What is ID3v1.1?</TD></TR></TBODY></TABLE> <TABLE border=0> <TBODY> <TR
@@ -26,6 +26,7 @@ import java.util.Iterator;
  * @author Eric Farng
  * @version $Revision: 1.7 $
  */
+@SuppressWarnings({ "rawtypes" })
 public class ID3v1_1 extends ID3v1 {
 
     protected byte track = -1;

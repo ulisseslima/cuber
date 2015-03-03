@@ -1,5 +1,11 @@
 package org.farng.mp3.lyrics3;
 
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 import org.farng.mp3.AbstractMP3Tag;
 import org.farng.mp3.InvalidTagException;
 import org.farng.mp3.TagException;
@@ -8,12 +14,6 @@ import org.farng.mp3.TagOptionSingleton;
 import org.farng.mp3.id3.AbstractID3v2Frame;
 import org.farng.mp3.id3.ID3v1;
 import org.farng.mp3.id3.ID3v2_4;
-
-import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 /**
  * <TABLE border=0> <TBODY> <TR> <TD class=h2>What is Lyrics3 v2.00?</TD></TR></TBODY></TABLE> <TABLE border=0> <TBODY>
@@ -76,6 +76,7 @@ import java.util.Map;
  * @author Eric Farng
  * @version $Revision: 1.5 $
  */
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class Lyrics3v2 extends AbstractLyrics3 {
 
     private Map fieldMap = new HashMap(8);

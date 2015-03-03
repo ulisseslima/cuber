@@ -1,15 +1,15 @@
 package org.farng.mp3.id3;
 
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.util.Iterator;
+import java.util.LinkedList;
+
 import org.farng.mp3.InvalidTagException;
 import org.farng.mp3.TagUtility;
 import org.farng.mp3.object.ObjectID3v2LyricLine;
 import org.farng.mp3.object.ObjectLyrics3Line;
 import org.farng.mp3.object.ObjectLyrics3TimeStamp;
-
-import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.util.Iterator;
-import java.util.LinkedList;
 
 /**
  * <h3>4.9.&nbsp;&nbsp; Synchronised lyrics/text</h3>
@@ -100,6 +100,7 @@ import java.util.LinkedList;
  * @author Eric Farng
  * @version $Revision: 1.5 $
  */
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class FrameBodySYLT extends AbstractID3v2FrameBody {
 
     LinkedList lines = new LinkedList();

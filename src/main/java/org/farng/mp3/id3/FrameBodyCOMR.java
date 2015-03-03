@@ -1,13 +1,13 @@
 package org.farng.mp3.id3;
 
+import java.io.IOException;
+import java.io.RandomAccessFile;
+
 import org.farng.mp3.InvalidTagException;
 import org.farng.mp3.object.ObjectByteArraySizeTerminated;
 import org.farng.mp3.object.ObjectNumberHashMap;
 import org.farng.mp3.object.ObjectStringDate;
 import org.farng.mp3.object.ObjectStringNullTerminated;
-
-import java.io.IOException;
-import java.io.RandomAccessFile;
 
 /**
  * <h3>4.24.&nbsp;&nbsp; Commercial frame</h3>
@@ -71,6 +71,7 @@ import java.io.RandomAccessFile;
  * @author Eric Farng
  * @version $Revision: 1.4 $
  */
+@SuppressWarnings({ "rawtypes" })
 public class FrameBodyCOMR extends AbstractID3v2FrameBody {
 
     /**

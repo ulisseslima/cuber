@@ -1,5 +1,9 @@
 package org.farng.mp3.id3;
 
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.util.Iterator;
+
 import org.farng.mp3.InvalidTagException;
 import org.farng.mp3.TagConstant;
 import org.farng.mp3.TagUtility;
@@ -11,10 +15,6 @@ import org.farng.mp3.lyrics3.FieldBodyINF;
 import org.farng.mp3.lyrics3.FieldBodyLYR;
 import org.farng.mp3.lyrics3.Lyrics3v2Field;
 import org.farng.mp3.object.ObjectLyrics3Line;
-
-import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.util.Iterator;
 
 /**
  * <p>&nbsp;&nbsp; All ID3v2 frames consists of one frame header followed by one or more<br> &nbsp;&nbsp; fields
@@ -200,6 +200,7 @@ import java.util.Iterator;
  * @author Eric Farng
  * @version $Revision: 1.6 $
  */
+@SuppressWarnings({ "rawtypes" })
 public class ID3v2_4Frame extends ID3v2_3Frame {
 
     protected boolean dataLengthIndicator = false;

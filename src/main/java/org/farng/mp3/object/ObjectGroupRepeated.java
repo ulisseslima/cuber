@@ -1,9 +1,9 @@
 package org.farng.mp3.object;
 
-import org.farng.mp3.TagUtility;
-
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import org.farng.mp3.TagUtility;
 
 /**
  * ID3v2 and Lyrics3v2 tags have individual fields <code>AbstractMP3Fragment</code>s Then each fragment is broken down
@@ -12,6 +12,7 @@ import java.util.Iterator;
  * @author Eric Farng
  * @version $Revision: 1.5 $
  */
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class ObjectGroupRepeated extends AbstractMP3Object {
 
     private ArrayList objectList;

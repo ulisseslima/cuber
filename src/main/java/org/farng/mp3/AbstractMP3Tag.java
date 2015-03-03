@@ -1,12 +1,12 @@
 package org.farng.mp3;
 
-import org.farng.mp3.id3.AbstractID3v2;
-import org.farng.mp3.id3.AbstractID3v2Frame;
-import org.farng.mp3.id3.ID3v2_4;
-
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.Iterator;
+
+import org.farng.mp3.id3.AbstractID3v2;
+import org.farng.mp3.id3.AbstractID3v2Frame;
+import org.farng.mp3.id3.ID3v2_4;
 
 /**
  * <h2>Introduction to tags</h2> There are three types of tags found in an MP3 file found in this order: <ol>
@@ -120,6 +120,7 @@ import java.util.Iterator;
  * @author Eric Farng
  * @version $Revision: 1.4 $
  */
+@SuppressWarnings({ "rawtypes" })
 public abstract class AbstractMP3Tag extends AbstractMP3FileItem {
 
     /**

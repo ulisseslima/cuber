@@ -9,6 +9,7 @@ import java.util.NoSuchElementException;
  * @author Eric Farng
  * @version $Revision: 1.1 $
  */
+@SuppressWarnings({ "rawtypes" })
 public class FilenameTokenIterator implements Iterator {
 
     /**

@@ -1,14 +1,14 @@
 package org.farng.mp3.lyrics3;
 
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.util.Iterator;
+
 import org.farng.mp3.AbstractMP3Tag;
 import org.farng.mp3.TagNotFoundException;
 import org.farng.mp3.TagOptionSingleton;
 import org.farng.mp3.TagUtility;
 import org.farng.mp3.id3.ID3v1;
-
-import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.util.Iterator;
 
 /**
  * <TABLE border=0> <TBODY> <TR> <TD class=h1>&nbsp;Lyrics3 made easy&nbsp;</TD></TR> </TBODY></TABLE> <BR>&nbsp; <TABLE
@@ -34,6 +34,7 @@ import java.util.Iterator;
  * @author Eric Farng
  * @version $Revision: 1.5 $
  */
+@SuppressWarnings({ "rawtypes" })
 public class Lyrics3v1 extends AbstractLyrics3 {
 
     private String lyric = "";
