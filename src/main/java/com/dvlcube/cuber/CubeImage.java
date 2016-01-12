@@ -54,7 +54,8 @@ public class CubeImage {
 		try {
 			this.path.reset(path);
 			origin = aClass;
-			BufferedImage image = ImageIO.read(aClass.getResourceAsStream(this.path.o));
+			BufferedImage image = ImageIO.read(aClass
+					.getResourceAsStream(this.path.o));
 			o = image;
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -139,7 +140,8 @@ public class CubeImage {
 	 */
 	public CubeImage randomize() {
 		if (o == null) {
-			throw new IllegalStateException("The BufferedImage was not initialized");
+			throw new IllegalStateException(
+					"The BufferedImage was not initialized");
 		}
 
 		RandomMode mode = RandomMode.getAny();
@@ -167,7 +169,8 @@ public class CubeImage {
 
 	@Override
 	public String toString() {
-		return "CubeImage [o=" + o + ", origin=" + origin + ", path=" + path + "]";
+		return "CubeImage [o=" + o + ", origin=" + origin + ", path=" + path
+				+ "]";
 	}
 
 	public int w() {
@@ -185,7 +188,8 @@ public class CubeImage {
 	 */
 	public CubeImage write(CubeFile file) {
 		if (o == null) {
-			throw new IllegalStateException("this BufferedImage was not initialized");
+			throw new IllegalStateException(
+					"this BufferedImage was not initialized");
 		}
 
 		String path = file.o.getPath();
@@ -210,7 +214,8 @@ public class CubeImage {
 			throw new IllegalArgumentException("path was not initialized");
 		}
 
-		ImageUtils.write(pixels, new Dimension(o.getWidth(), o.getHeight()), path.o);
+		ImageUtils.write(pixels, new Dimension(o.getWidth(), o.getHeight()),
+				path.o);
 		return this;
 	}
 
@@ -241,5 +246,23 @@ public class CubeImage {
 	 */
 	public CubeImage write(String path) {
 		return write($f(path));
+	}
+
+	/**
+	 * @return ascii representation of this image.
+	 * @since Jan 12, 2016
+	 * @author Ulisses Lima
+	 */
+	public String toAscii() {
+		return ImageUtils.toAscii(o);
+	}
+
+	/**
+	 * @return ascii representation of this image.
+	 * @since Jan 12, 2016
+	 * @author Ulisses Lima
+	 */
+	public String toAscii(int scale) {
+		return ImageUtils.toAscii(o, scale);
 	}
 }

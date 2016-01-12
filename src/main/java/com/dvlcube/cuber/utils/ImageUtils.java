@@ -76,7 +76,8 @@ public class ImageUtils {
 
 	private static final int[] RGB_MASKS = { 0xFF0000, 0xFF00, 0xFF };
 
-	private static final ColorModel RGB_OPAQUE = new DirectColorModel(32, RGB_MASKS[0], RGB_MASKS[1], RGB_MASKS[2]);
+	private static final ColorModel RGB_OPAQUE = new DirectColorModel(32,
+			RGB_MASKS[0], RGB_MASKS[1], RGB_MASKS[2]);
 
 	/**
 	 * @param original
@@ -90,7 +91,8 @@ public class ImageUtils {
 
 		int threshold = otsuTreshold(original);
 
-		BufferedImage binarized = new BufferedImage(original.getWidth(), original.getHeight(), original.getType());
+		BufferedImage binarized = new BufferedImage(original.getWidth(),
+				original.getHeight(), original.getType());
 
 		for (int i = 0; i < original.getWidth(); i++) {
 			for (int j = 0; j < original.getHeight(); j++) {
@@ -111,7 +113,8 @@ public class ImageUtils {
 	}
 
 	public static int color(Color color) {
-		int red = color.getRed(), green = color.getGreen(), blue = color.getBlue();
+		int red = color.getRed(), green = color.getGreen(), blue = color
+				.getBlue();
 		int newPixel = 0;
 		int alpha = 1;
 		newPixel += alpha;
@@ -169,10 +172,11 @@ public class ImageUtils {
 	}
 
 	/**
-	 * http://stackoverflow.com/questions/4386446/problem-using-imageio-write-jpg-file/4388542#4388542
+	 * http://stackoverflow.com/questions/4386446/problem-using-imageio-write-
+	 * jpg-file/4388542#4388542
 	 * <p>
-	 * I needed to make all this stuff with RGB masks and the color model because otherwise pixels wouldn't
-	 * get drawn correctly.
+	 * I needed to make all this stuff with RGB masks and the color model
+	 * because otherwise pixels wouldn't get drawn correctly.
 	 * 
 	 * @param pixels
 	 *            the pixels.
@@ -186,7 +190,8 @@ public class ImageUtils {
 	 */
 	public static BufferedImage draw(int[] pixels, int width, int height) {
 		DataBuffer buffer = new DataBufferInt(pixels, width * height);
-		WritableRaster raster = Raster.createPackedRaster(buffer, width, height, width, RGB_MASKS, null);
+		WritableRaster raster = Raster.createPackedRaster(buffer, width,
+				height, width, RGB_MASKS, null);
 		BufferedImage image = new BufferedImage(RGB_OPAQUE, raster, false, null);
 		return image;
 	}
@@ -208,7 +213,8 @@ public class ImageUtils {
 		int labelSize = 30;
 		g.fillRect(w1, y1, image.getWidth() - (w1 + w1), labelSize);
 
-		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g.setColor(Color.BLACK);
 		int fontSize = labelSize * 70 / 100;
 		g.setFont(new Font(Font.MONOSPACED, Font.PLAIN, fontSize));
@@ -308,7 +314,8 @@ public class ImageUtils {
 	}
 
 	public static int[] pixels(BufferedImage image) {
-		return image.getRGB(0, 0, image.getWidth(), image.getHeight(), null, 0, image.getWidth());
+		return image.getRGB(0, 0, image.getWidth(), image.getHeight(), null, 0,
+				image.getWidth());
 	}
 
 	public static byte[] pixelsb(BufferedImage image) {
@@ -316,11 +323,13 @@ public class ImageUtils {
 		if (dataBuffer instanceof DataBufferByte) {
 			return ((DataBufferByte) dataBuffer).getData();
 		}
-		throw new IllegalArgumentException("image is instanceof " + dataBuffer.getClass());
+		throw new IllegalArgumentException("image is instanceof "
+				+ dataBuffer.getClass());
 	}
 
 	/**
-	 * http://stackoverflow.com/questions/4386446/problem-using-imageio-write-jpg-file/4388542#4388542
+	 * http://stackoverflow.com/questions/4386446/problem-using-imageio-write-
+	 * jpg-file/4388542#4388542
 	 * 
 	 * @param image
 	 * @return image pixels.
@@ -349,7 +358,8 @@ public class ImageUtils {
 		if (dataBuffer instanceof DataBufferInt) {
 			return ((DataBufferInt) dataBuffer).getData();
 		}
-		throw new IllegalArgumentException("image is instanceof " + dataBuffer.getClass());
+		throw new IllegalArgumentException("image is instanceof "
+				+ dataBuffer.getClass());
 	}
 
 	/**
@@ -490,9 +500,12 @@ public class ImageUtils {
 				break;
 			}
 
-			float hue = Cuber.$(hAngle, -1, 1).map(hRange1 * fixer, hRange2 * fixer).f();
-			float saturation = Cuber.$(sAngle, -1, 1).map(sRange1 * fixer, sRange2 * fixer).f();
-			float brightness = Cuber.$(bAngle, -1, 1).map(bRange1 * fixer, bRange2 * fixer).f();
+			float hue = Cuber.$(hAngle, -1, 1)
+					.map(hRange1 * fixer, hRange2 * fixer).f();
+			float saturation = Cuber.$(sAngle, -1, 1)
+					.map(sRange1 * fixer, sRange2 * fixer).f();
+			float brightness = Cuber.$(bAngle, -1, 1)
+					.map(bRange1 * fixer, bRange2 * fixer).f();
 
 			pixels[i] = colorFromHSB(hue, saturation, brightness);
 
@@ -574,7 +587,8 @@ public class ImageUtils {
 	 * @since 24/05/2013
 	 */
 	public static BufferedImage resize(BufferedImage image, int w, int h) {
-		BufferedImage resizedImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+		BufferedImage resizedImage = new BufferedImage(w, h,
+				BufferedImage.TYPE_INT_RGB);
 		Graphics2D g = resizedImage.createGraphics();
 		g.drawImage(image, 0, 0, w, h, null);
 		g.dispose();
@@ -607,6 +621,40 @@ public class ImageUtils {
 	public static String toAscii(BufferedImage image) {
 		StringBuilder builder = new StringBuilder();
 
+		for (int y = 0; y < image.getHeight(); y++) {
+			for (int x = 0; x < image.getWidth(); x++) {
+				int red = new Color(image.getRGB(x, y)).getRed();
+
+				if (red >= 0 && red <= 15) {
+					builder.append("██");
+				} else if (red > 15 && red <= 75) {
+					builder.append("▓▓");
+				} else if (red > 75 && red <= 135) {
+					builder.append("▒▒");
+				} else if (red > 135 && red <= 195) {
+					builder.append("░░");
+				} else if (red > 195 && red <= 255) {
+					builder.append("  ");
+				} else if (red < 0 || red > 255) {
+					builder.append("oo");
+				}
+			}
+			builder.append("\n");
+		}
+		return builder.toString();
+	}
+
+	/**
+	 * @param image
+	 * @param scale
+	 * @return image in ASCII
+	 * @since Jan 12, 2016
+	 * @author Ulisses Lima
+	 */
+	public static String toAscii(BufferedImage image, int scale) {
+		StringBuilder builder = new StringBuilder();
+
+		image = scale(image, scale);
 		for (int y = 0; y < image.getHeight(); y++) {
 			for (int x = 0; x < image.getWidth(); x++) {
 				int red = new Color(image.getRGB(x, y)).getRed();
@@ -679,7 +727,8 @@ public class ImageUtils {
 		int alpha, red, green, blue;
 		int newPixel;
 
-		BufferedImage lum = new BufferedImage(original.getWidth(), original.getHeight(), original.getType());
+		BufferedImage lum = new BufferedImage(original.getWidth(),
+				original.getHeight(), original.getType());
 		for (int i = 0; i < original.getWidth(); i++) {
 			for (int j = 0; j < original.getHeight(); j++) {
 
