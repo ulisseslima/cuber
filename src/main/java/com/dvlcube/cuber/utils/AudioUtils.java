@@ -75,7 +75,8 @@ public class AudioUtils {
 				new File(wavFile).delete();
 			}
 			return target;
-		} catch (Exception e) {
+		} catch (Throwable e) {
+			System.err.println("could not encode to MP3");
 			e.printStackTrace();
 			return null;
 		}
