@@ -28,6 +28,8 @@ import com.dvlcube.cuber.CubeFile;
 import com.dvlcube.cuber.utils.AudioUtils;
 
 /**
+ * Run with no args to just play a random song, run with a directory as first
+ * argument to save a whole album.
  * 
  * @since 08/07/2013
  * @author wonka
@@ -65,8 +67,7 @@ public class AlbumFactory {
 		CubeFile f = $f(dir + "/" + albumName + "/");
 		String albumDir = f.o.getPath();
 		String extrasDir = albumDir + "/" + "extras";
-		$img(640, 480).label(Album.ARTIST + "_" + albumName).write(
-				f.newFile(albumName + ".png"));
+		$img(640, 480).label(Album.ARTIST + "_" + albumName).write(f.newFile(albumName + ".png"));
 
 		int i = 1;
 		int tempoGoal = 1500;
@@ -76,8 +77,7 @@ public class AlbumFactory {
 			String songPath = albumDir + "/" + i + " - " + songName;
 			tempoCount += $midi().publish(songPath).tempo;
 
-			AudioUtils.tag(Album.ARTIST, albumName, songName, Album.GENRE, i,
-					songPath + ".mp3");
+			AudioUtils.tag(Album.ARTIST, albumName, songName, Album.GENRE, i, songPath + ".mp3");
 			$f(songPath + ".original.mp3").rm();
 			$f(songPath + ".csq").mv(extrasDir);
 			$f(songPath + ".midi").mv(extrasDir);
